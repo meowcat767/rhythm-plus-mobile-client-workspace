@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity
 
         ShortcutInfoCompat licenceShortcut = new ShortcutInfoCompat.Builder(this, "licence")
                 .setShortLabel("Licence")
-                .setLongLabel("Licence")
+                .setLongLabel("Client Licence")
                 .setIcon(IconCompat.createWithResource(this, R.drawable.icon))
                 .setRank(1)
                 .setIntent(new Intent(Intent.ACTION_VIEW,
@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity
         int UI_OPTIONS = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
         getWindow().getDecorView().setSystemUiVisibility(UI_OPTIONS);
 
-        android.util.Log.i("onCreate", "Starting Web View....");
+        android.util.Log.i("onCreate", "Starting WebView....");
 
         webView = findViewById(R.id.mainWeb);
         webView.getSettings().setJavaScriptEnabled(true);
@@ -278,7 +278,7 @@ public class MainActivity extends AppCompatActivity
             {
                 android.util.Log.i("onCreate", "Failed to check for updates " + e);
                 Snackbar snackbar = Snackbar.make(coordinatorLayout,
-                        "Failed to check for updates", Snackbar.LENGTH_LONG);
+                        "Something went wrong while checking for updates!", Snackbar.LENGTH_LONG);
                 snackbar.show();
             }
         });
@@ -311,7 +311,7 @@ public class MainActivity extends AppCompatActivity
                 {
                     android.util.Log.i("onCreate", "Failed to decode notices - " + e);
                     Snackbar snackbar = Snackbar.make(coordinatorLayout,
-                            "Failed to decode notices", Snackbar.LENGTH_LONG);
+                            "Something went wrong while checking for notices! (Decode error)", Snackbar.LENGTH_LONG);
                     snackbar.show();
                 }
             }
@@ -322,7 +322,7 @@ public class MainActivity extends AppCompatActivity
             {
                 android.util.Log.i("onCreate", "Failed to get current notices - " + e);
                 Snackbar snackbar = Snackbar.make(coordinatorLayout,
-                        "Failed to get current notices", Snackbar.LENGTH_LONG);
+                        "Something went wrong while checking for notices!", Snackbar.LENGTH_LONG);
                 snackbar.show();
             }
         });
@@ -492,13 +492,13 @@ public class MainActivity extends AppCompatActivity
         {
             android.util.Log.i("newUpdate", "New update to the client! Showing user");
 
-            showDialogBox(context, "New update", "There is a new update to the client app. It's recommended you update for the latest fixes and changes however you can optionally skip\n\nYou won't be alerted about this update again until there is a new update", "Update", "Later", new DialogInterface.OnClickListener() {
+            showDialogBox(context, "New update!", "There is a new update to the client. It's recommended that you update for the latest fixes and changes however you can optionally skip it if you want", "Update", "Later", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which)
                 {
                     Toast.makeText(context, "GitHub should now open via the app or website", Toast.LENGTH_SHORT).show();
                     context.startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("https://github.com/splamei/rplus-mobile-client/releases/")));
+                            Uri.parse("https://github.com/splamei/rhythm-plus-mobile-client/releases/")));
                     System.exit(0);
                 }
             }, null);
@@ -518,7 +518,7 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(DialogInterface dialog, int which)
                 {
-                    Toast.makeText(context, "You are now being directed to the url provided", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Opening the link provided now...", Toast.LENGTH_SHORT).show();
                     context.startActivity(new Intent(Intent.ACTION_VIEW,
                             Uri.parse(url)));
                 }
