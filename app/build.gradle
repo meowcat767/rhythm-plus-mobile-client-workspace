@@ -4,12 +4,12 @@ plugins {
 
 android {
     namespace 'com.splamei.rplus.client'
-    compileSdk 34
+    compileSdk 36
 
     defaultConfig {
         applicationId "com.splamei.rplus.client"
         minSdk 26
-        targetSdk 34
+        targetSdk 36
         versionCode 3
         versionName "2.1"
 
