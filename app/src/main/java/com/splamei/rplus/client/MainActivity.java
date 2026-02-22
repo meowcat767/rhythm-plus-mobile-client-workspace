@@ -107,26 +107,33 @@ public class MainActivity extends AppCompatActivity
 
         createChannel(this, MISC_CHANNEL_ID, "Misc", "Other notifications used by the client", NotificationManager.IMPORTANCE_DEFAULT);
         createChannel(this, ERROR_CHANNEL_ID, "Errors", "Notifications sent when errors occur", NotificationManager.IMPORTANCE_HIGH);
-        try {
-            ShortcutInfoCompat shortcut = new ShortcutInfoCompat.Builder(this, "more")
-                    .setShortLabel("About")
-                    .setLongLabel("About the client")
-                    .setIcon(IconCompat.createWithResource(this, R.drawable.icon))
-                    .setRank(0)
-                    .setIntent(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("https://rhythm-plus.com")))
-                    .build();
 
-            ShortcutInfoCompat licenceShortcut = new ShortcutInfoCompat.Builder(this, "licence")
-                    .setShortLabel("Licence")
-                    .setLongLabel("Client Licence")
-                    .setIcon(IconCompat.createWithResource(this, R.drawable.icon))
-                    .setRank(1)
-                    .setIntent(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("https://github.com/splamei/rplus-mobile-client/blob/master/LICENSE")))
-                    .build();
-            ShortcutManagerCompat.pushDynamicShortcut(this, shortcut);
-            ShortcutManagerCompat.pushDynamicShortcut(this, licenceShortcut);
+        try {
+            Intent aboutIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://rhythm-plus.com"));
+            Intent licenceIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/splamei/rplus-mobile-client/blob/master/LICENSE"));
+
+            // Only create shortcut if there's an app to handle it
+            if (aboutIntent.resolveActivity(getPackageManager()) != null) {
+                ShortcutInfoCompat shortcut = new ShortcutInfoCompat.Builder(this, "more")
+                        .setShortLabel("About")
+                        .setLongLabel("About the client")
+                        .setIcon(IconCompat.createWithResource(this, R.drawable.icon))
+                        .setRank(0)
+                        .setIntent(aboutIntent)
+                        .build();
+                ShortcutManagerCompat.pushDynamicShortcut(this, shortcut);
+            }
+
+            if (licenceIntent.resolveActivity(getPackageManager()) != null) {
+                ShortcutInfoCompat licenceShortcut = new ShortcutInfoCompat.Builder(this, "licence")
+                        .setShortLabel("Licence")
+                        .setLongLabel("Client Licence")
+                        .setIcon(IconCompat.createWithResource(this, R.drawable.icon))
+                        .setRank(1)
+                        .setIntent(licenceIntent)
+                        .build();
+                ShortcutManagerCompat.pushDynamicShortcut(this, licenceShortcut);
+            }
         } catch(Resources.NotFoundException e) {
             android.util.Log.e("ShortcutError", "Failed to create shortcut: " + e);
         }
