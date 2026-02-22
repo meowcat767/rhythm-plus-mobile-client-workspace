@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity
 
     RequestQueue ExampleRequestQueue;
 
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint({"SetJavaScriptEnabled", "QueryPermissionsNeeded"})
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
