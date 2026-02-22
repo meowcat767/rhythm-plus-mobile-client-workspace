@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity
     public static String mainUrl = "https://rhythm-plus.com"; // Must start with URL to allow loading
     public static String urlForNewTab = "auth.rhythm-plus.com"; // Must contain to open the second tab
     public static String urlForNewTabClosure = "auth.rhythm-plus.com/__/auth/handler?state="; // Must contain to close the second tab and return
-    public static String webView1UserAgent = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) RhythmPlusSplameiClient/1003 Mobile Safari/537.36";
+    public static String webView1UserAgent = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) RhythmPlus-SplameiClient/1003 Mobile Safari/537.36";
     public static String webView2UserAgent = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6943.89 Mobile Safari/537.36";
     public static String updateUrl = "https://www.veemo.uk/net/r-plus/mobile/ver";
     public static String noticesUrl = "https://www.veemo.uk/net/r-plus/mobile/notices";
