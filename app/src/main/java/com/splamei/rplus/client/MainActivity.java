@@ -1,6 +1,7 @@
 package com.splamei.rplus.client;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity
 
     RequestQueue ExampleRequestQueue;
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
