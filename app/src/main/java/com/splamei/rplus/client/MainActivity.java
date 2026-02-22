@@ -6,6 +6,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -106,27 +107,31 @@ public class MainActivity extends AppCompatActivity
 
         createChannel(this, MISC_CHANNEL_ID, "Misc", "Other notifications used by the client", NotificationManager.IMPORTANCE_DEFAULT);
         createChannel(this, ERROR_CHANNEL_ID, "Errors", "Notifications sent when errors occur", NotificationManager.IMPORTANCE_HIGH);
+        try {
+            ShortcutInfoCompat shortcut = new ShortcutInfoCompat.Builder(this, "more")
+                    .setShortLabel("About")
+                    .setLongLabel("About the client")
+                    .setIcon(IconCompat.createWithResource(this, R.drawable.icon))
+                    .setRank(0)
+                    .setIntent(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("https://rhythm-plus.com")))
+                    .build();
 
-        ShortcutInfoCompat shortcut = new ShortcutInfoCompat.Builder(this, "more")
-                .setShortLabel("About")
-                .setLongLabel("About the client")
-                .setIcon(IconCompat.createWithResource(this, R.drawable.icon))
-                .setRank(0)
-                .setIntent(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("https://rhythm-plus.com")))
-                .build();
+            ShortcutInfoCompat licenceShortcut = new ShortcutInfoCompat.Builder(this, "licence")
+                    .setShortLabel("Licence")
+                    .setLongLabel("Client Licence")
+                    .setIcon(IconCompat.createWithResource(this, R.drawable.icon))
+                    .setRank(1)
+                    .setIntent(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("https://github.com/splamei/rplus-mobile-client/blob/master/LICENSE")))
+                    .build();
+            ShortcutManagerCompat.pushDynamicShortcut(this, shortcut);
+            ShortcutManagerCompat.pushDynamicShortcut(this, licenceShortcut);
+        } catch(Resources.NotFoundException e) {
+            android.util.Log.e("ShortcutError", "Failed to create shortcut: " + e);
+        }
 
-        ShortcutInfoCompat licenceShortcut = new ShortcutInfoCompat.Builder(this, "licence")
-                .setShortLabel("Licence")
-                .setLongLabel("Client Licence")
-                .setIcon(IconCompat.createWithResource(this, R.drawable.icon))
-                .setRank(1)
-                .setIntent(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("https://github.com/splamei/rplus-mobile-client/blob/master/LICENSE")))
-                .build();
 
-        ShortcutManagerCompat.pushDynamicShortcut(this, shortcut);
-        ShortcutManagerCompat.pushDynamicShortcut(this, licenceShortcut);
 
         ExampleRequestQueue = Volley.newRequestQueue(MainActivity.this);
         coordinatorLayout = findViewById(R.id.main);
