@@ -334,6 +334,7 @@ public class MainActivity extends AppCompatActivity
         ExampleRequestQueue.add(NoticesStringRequest);
     }
 
+    @SuppressLint("GestureBackNavigation")
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
