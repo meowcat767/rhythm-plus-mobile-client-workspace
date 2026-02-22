@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity
 
         try {
             Intent aboutIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://rhythm-plus.com"));
-            Intent licenceIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/splamei/rplus-mobile-client/blob/master/LICENSE"));
+            Intent licenceIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/splamei/rhythm-plus-mobile-client/blob/master/LICENSE"));
 
             // Only create shortcut if there's an app to handle it
             if (aboutIntent.resolveActivity(getPackageManager()) != null) {
