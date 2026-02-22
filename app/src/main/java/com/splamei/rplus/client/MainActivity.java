@@ -163,10 +163,10 @@ public class MainActivity extends AppCompatActivity
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setDomStorageEnabled(true);
         webView.setHorizontalScrollBarEnabled(false);
-        webView.getSettings().setDatabaseEnabled(true);
+        webView.getSettings().setDatabaseEnabled(false);
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
-        webView.getSettings().setAllowFileAccess(true);
+        webView.getSettings().setAllowFileAccess(false);
         webView.setScrollbarFadingEnabled(false);
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         webView.setInitialScale(1);
@@ -184,10 +184,10 @@ public class MainActivity extends AppCompatActivity
         loginView.getSettings().setLoadWithOverviewMode(true);
         loginView.getSettings().setDomStorageEnabled(true);
         loginView.setHorizontalScrollBarEnabled(false);
-        loginView.getSettings().setDatabaseEnabled(true);
+        loginView.getSettings().setDatabaseEnabled(false);
         loginView.getSettings().setBuiltInZoomControls(true);
         loginView.getSettings().setDisplayZoomControls(false);
-        loginView.getSettings().setAllowFileAccess(true);
+        loginView.getSettings().setAllowFileAccess(false);
         loginView.setScrollbarFadingEnabled(false);
         loginView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         loginView.setInitialScale(1);
