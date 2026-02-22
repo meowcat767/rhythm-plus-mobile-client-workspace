@@ -56,7 +56,7 @@ import java.io.IOException;
 public class MainActivity extends AppCompatActivity
 {
     // Main data
-    public static String myVerCode = "1003";
+    public static String myVerCode = "1004";
 
     // Url and Webview data
     public static String urlToLoad = "https://rhythm-plus.com"; // Full URL to load
