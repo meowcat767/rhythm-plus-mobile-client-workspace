@@ -492,7 +492,7 @@ public class MainActivity extends AppCompatActivity
         {
             android.util.Log.i("newUpdate", "New update to the client! Showing user");
 
-            showDialogBox(context, "New update!", "There is a new update to the client. It's recommended that you update for the latest fixes and changes however you can optionally skip it if you want", "Update", "Later", new DialogInterface.OnClickListener() {
+            showDialogBox(context, "New update!", "There is a new update to the client. It's recommended that you update for the latest fixes and changes as not updating can break the client!", "Update", "Later", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which)
                 {
@@ -518,7 +518,7 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(DialogInterface dialog, int which)
                 {
-                    Toast.makeText(context, "Opening the link provided now...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Opening the link provided now!", Toast.LENGTH_SHORT).show();
                     context.startActivity(new Intent(Intent.ACTION_VIEW,
                             Uri.parse(url)));
                 }
