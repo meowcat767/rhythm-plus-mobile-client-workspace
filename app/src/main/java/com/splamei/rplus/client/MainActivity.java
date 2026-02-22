@@ -297,7 +297,7 @@ public class MainActivity extends AppCompatActivity
             {
                 try
                 {
-                    String regex = "[;]";
+                    String regex = ";";
                     String[] splitNotices;
 
                     splitNotices = response.split(regex);
@@ -401,7 +401,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public static boolean sendNotificationWithURL(Context context, final String ID, String title, String message, int importance, String url, String buttonText, int notifcationID)
+    public static boolean sendNotificationWithURL(Context context, final String ID, String title, String message, int importance, String url, int notifcationID)
     {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
