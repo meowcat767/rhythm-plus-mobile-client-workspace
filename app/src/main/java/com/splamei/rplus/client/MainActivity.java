@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebResourceRequest;
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity
     CoordinatorLayout coordinatorLayout;
 
     boolean hasShownAuth = false;
+    boolean pageLoaded = false;
     public static final String ERROR_CHANNEL_ID = "error_channel";
     public static final String MISC_CHANNEL_ID = "misc_channel";
 
@@ -193,6 +195,22 @@ public class MainActivity extends AppCompatActivity
         loginView.setInitialScale(1);
         loginView.getSettings().setUserAgentString(webView2UserAgent);
 
+        android.util.Log.i("onCreate", "WebView setting created. Now setting up the wait handler");
+
+        Handler handler = new Handler();
+        Runnable slowLoadRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (!pageLoaded){
+                    Snackbar snackbar = Snackbar.make(coordinatorLayout,
+                            "It's taking a while to load... Don't worry, we're still working hard", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                }
+            }
+        };
+
+        android.util.Log.i("onCreate", "Wait handler made, now making the web view clients");
+
         webViewClient = new WebViewClient()
         {
             @Override
@@ -207,6 +225,7 @@ public class MainActivity extends AppCompatActivity
                 else if (url.contains(urlForNewTab))
                 {
                     hasShownAuth = false;
+                    pageLoaded = false;
 
                     webView.setVisibility(View.GONE);
                     loginView.setVisibility(View.VISIBLE);
@@ -219,6 +238,8 @@ public class MainActivity extends AppCompatActivity
                     Snackbar snackbar = Snackbar.make(coordinatorLayout,
                             secondTabLoadToastMessage, Snackbar.LENGTH_LONG);
                     snackbar.show();
+
+                    handler.postDelayed(slowLoadRunnable, 8000);
 
                     return true;
                 }
@@ -239,6 +260,9 @@ public class MainActivity extends AppCompatActivity
                 backImg.setVisibility(View.INVISIBLE);
 
                 webView.setVisibility(View.VISIBLE);
+
+                pageLoaded = true;
+                handler.removeCallbacks(slowLoadRunnable);
             }
         };
 
@@ -264,6 +288,8 @@ public class MainActivity extends AppCompatActivity
 
         webView.setWebViewClient(webViewClient);
         webView.loadUrl(urlToLoad);
+
+        handler.postDelayed(slowLoadRunnable, 8000);
 
         android.util.Log.i("onCreate", "Client Started. Now checking for updates...");
 
