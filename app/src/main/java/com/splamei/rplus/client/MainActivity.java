@@ -294,7 +294,7 @@ public class MainActivity extends AppCompatActivity
         android.util.Log.i("onCreate", "Client Started. Now checking for updates...");
 
         String url = updateUrl;
-        StringRequest ExampleStringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>()
+        StringRequest ExampleStringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<>() // Again, we don't need to specify a string here
         {
             @Override
             public void onResponse(String response)
@@ -330,7 +330,7 @@ public class MainActivity extends AppCompatActivity
         android.util.Log.i("onCreate", "Now checking for notices");
 
         String urlNotices = noticesUrl;
-        StringRequest NoticesStringRequest = new StringRequest(Request.Method.GET, urlNotices, new Response.Listener<String>()
+        StringRequest NoticesStringRequest = new StringRequest(Request.Method.GET, urlNotices, new Response.Listener<>() // We don't need to specify a string here.
         {
             @Override
             public void onResponse(String response)
@@ -424,9 +424,9 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public static void sendNotifcation(Context context, final String ID, String title, String message, int importance, int id)
+    public static void sendNotification(Context context, final String ID, String title, String message, int importance, int id)
     {
-        android.util.Log.i("sendNotifcation", "Sending notification - '" + title + "' - '" + message + "'");
+        android.util.Log.i("sendNotification", "Sending notification - '" + title + "' - '" + message + "'");
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, ID)
                 .setContentTitle(title)
@@ -442,12 +442,12 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public static boolean sendNotificationWithURL(Context context, final String ID, String title, String message, int importance, String url, int notifcationID)
+    public static boolean sendNotificationWithURL(Context context, final String ID, String title, String message, int importance, String url, int notificationID)
     {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
-        android.util.Log.i("sendNotifcationWithURL", "Sending notification - '" + title + "' - '" + message + "'");
+        android.util.Log.i("sendNotificationWithURL", "Sending notification - '" + title + "' - '" + message + "'");
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, ID)
                 .setContentTitle(title)
@@ -462,7 +462,7 @@ public class MainActivity extends AppCompatActivity
 
         if (notificationManagerCompat.areNotificationsEnabled())
         {
-            notificationManagerCompat.notify(notifcationID, builder.build());
+            notificationManagerCompat.notify(notificationID, builder.build());
 
             return true;
         }
@@ -529,22 +529,37 @@ public class MainActivity extends AppCompatActivity
         return file.exists();
     }
 
-    public static void newUpdate(Context context, String responce)
+    public static void newUpdate(Context context, String response)
     {
-        if (!myVerCode.contains(responce))
+        if (!myVerCode.contains(response))
         {
             android.util.Log.i("newUpdate", "New update to the client! Showing user");
 
-            showDialogBox(context, "New update!", "There is a new update to the client. It's recommended that you update for the latest fixes and changes as not updating can break the client!", "Update", "Later", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    Toast.makeText(context, "GitHub should now open via the app or website", Toast.LENGTH_SHORT).show();
-                    context.startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("https://github.com/splamei/rhythm-plus-mobile-client/releases/")));
-                    System.exit(0);
-                }
-            }, null);
+            showDialogBox(
+                    context,
+                    "New update!",
+                    "There is a new update to the client. It's recommended that you update for the latest fixes and changes as not updating can break the client!",
+                    "Update",
+                    "Later",
+                    (dialog, which) -> {
+
+                        Toast.makeText(
+                                context,
+                                "GitHub should now open via the app or website",
+                                Toast.LENGTH_SHORT
+                        ).show();
+
+                        Intent intent = new Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://github.com/splamei/rplus-mobile-client/releases")
+                        );
+
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+
+                    },
+                    null   // 👈 THIS was missing (7th argument)
+            );
         }
     }
 
@@ -556,16 +571,24 @@ public class MainActivity extends AppCompatActivity
         }
         else
         {
-            showDialogBox(context, title, text, "Ok", "More", null, new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    Toast.makeText(context, "Opening the link provided now!", Toast.LENGTH_SHORT).show();
-                    context.startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(url)));
-                }
-            });
+            showDialogBox(
+                    context,
+                    title,
+                    text,
+                    "Ok",
+                    "More",
+                    null,
+                    ((dialog, which) -> {
+                        Toast.makeText(context,
+                                "Opening the link!",
+                                Toast.LENGTH_SHORT
+                                ).show();
+
+                        context.startActivity(
+                                new Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                        );
+                    })
+            );
         }
     }
 }
