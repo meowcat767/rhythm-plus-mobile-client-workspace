@@ -202,8 +202,10 @@ public class MainActivity extends AppCompatActivity
         loginView.getSettings().setUserAgentString(webView2UserAgent);
 
         ImageButton settingsButton = findViewById(R.id.settingsButton);
-        new SettingsMenu(this, settingsButton);
-
+        new SettingsMenu();
+        settingsButton.setOnClickListener(v -> {
+            SettingsMenu.showMenu(MainActivity.this);
+        });
 
         webViewClient = new WebViewClient()
         {
