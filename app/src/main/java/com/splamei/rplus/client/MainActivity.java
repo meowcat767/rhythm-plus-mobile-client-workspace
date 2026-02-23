@@ -48,6 +48,7 @@ import com.android.volley.toolbox.Volley;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
+import com.splamei.rplus.client.ui.error.BatteryWarn;
 import com.splamei.rplus.client.ui.error.WebViewErrorHandler;
 
 import java.io.BufferedReader;
@@ -96,6 +97,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        BatteryWarn.checkBatteryLevel(this); // check on first start
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) ->
@@ -562,7 +564,7 @@ public class MainActivity extends AppCompatActivity
                         context.startActivity(intent);
 
                     },
-                    null   // 👈 THIS was missing (7th argument)
+                    null
             );
         }
     }
@@ -594,5 +596,12 @@ public class MainActivity extends AppCompatActivity
                     })
             );
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Check battery again when returning to the app
+        BatteryWarn.checkBatteryLevel(this);
     }
 }
