@@ -421,7 +421,7 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
-        android.util.Log.i("sendNotifcationWithURL", "Sending notifcation - '" + title + "' - '" + message + "'");
+        android.util.Log.i("sendNotificationWithURL", "Sending notification - '" + title + "' - '" + message + "'");
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, ID)
                 .setContentTitle(title)
