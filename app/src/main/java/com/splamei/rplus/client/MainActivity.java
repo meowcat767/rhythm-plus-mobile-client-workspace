@@ -350,6 +350,9 @@ public class MainActivity extends AppCompatActivity
                 {
                     progressIndicator.setProgress(100);
                     progressIndicator.setVisibility(View.GONE);
+
+                    pageLoaded = true;
+                    handler.removeCallbacks(slowLoadRunnable);
                 }
             }
         });
