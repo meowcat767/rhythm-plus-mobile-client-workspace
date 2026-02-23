@@ -7,8 +7,10 @@ import android.content.SharedPreferences;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 
 public class SettingsMenu {
 
@@ -58,6 +60,11 @@ public class SettingsMenu {
         v2Switch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             v2Switch.setText("Restart required");
             prefs.edit().putBoolean(KEY_V2_MODE, isChecked).apply();
+
+            if (isChecked)
+            {
+                Toast.makeText(activity, "An access code from the Discord is needed to use v2!", Toast.LENGTH_LONG).show();
+            }
         });
 
         layout.addView(label);
