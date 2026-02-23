@@ -13,9 +13,10 @@ import com.splamei.rplus.client.R;
 
 
 public class WebViewErrorHandler extends WebViewClient {
-    private Context context;
-    private WebView webView;
-    private FrameLayout errorLayout;
+    @SuppressWarnings("FieldCanBeLocal")
+    private final Context context;
+    private final WebView webView;
+    private final FrameLayout errorLayout;
 
     public WebViewErrorHandler(Context context, WebView webView, FrameLayout errorLayout) {
         this.context = context;
