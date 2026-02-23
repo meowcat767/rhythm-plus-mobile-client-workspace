@@ -304,7 +304,7 @@ public class MainActivity extends AppCompatActivity
         android.util.Log.i("onCreate", "Now checking for notices");
 
         String urlNotices = noticesUrl;
-        StringRequest NoticesStringRequest = new StringRequest(Request.Method.GET, urlNotices, new Response.Listener<String>()
+        StringRequest NoticesStringRequest = new StringRequest(Request.Method.GET, urlNotices, new Response.Listener<>() // We don't need to specify a string here.
         {
             @Override
             public void onResponse(String response)
