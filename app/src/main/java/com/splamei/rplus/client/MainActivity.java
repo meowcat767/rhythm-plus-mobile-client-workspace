@@ -44,8 +44,6 @@ import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -210,22 +208,17 @@ public class MainActivity extends AppCompatActivity
         loginView.getSettings().setUserAgentString(webView2UserAgent);
 
         ImageButton settingsButton = findViewById(R.id.settingsButton);
-        new SettingsMenu();
-        settingsButton.setOnClickListener(v -> {
-            SettingsMenu.showMenu(MainActivity.this);
-        });
+        //new SettingsMenu();
+        settingsButton.setOnClickListener(v -> SettingsMenu.showMenu(MainActivity.this));
         
         android.util.Log.i("onCreate", "WebView setting created. Now setting up the wait handler");
 
         Handler handler = new Handler();
-        Runnable slowLoadRunnable = new Runnable() {
-            @Override
-            public void run() {
-                if (!pageLoaded){
-                    Snackbar snackbar = Snackbar.make(coordinatorLayout,
-                            "It's taking a while to load... Don't worry, we're still working hard", Snackbar.LENGTH_LONG);
-                    snackbar.show();
-                }
+        Runnable slowLoadRunnable = () -> {
+            if (!pageLoaded){
+                Snackbar snackbar = Snackbar.make(coordinatorLayout,
+                        "It's taking a while to load... Don't worry, we're still working hard", Snackbar.LENGTH_LONG);
+                snackbar.show();
             }
         };
 
@@ -344,78 +337,60 @@ public class MainActivity extends AppCompatActivity
 
         android.util.Log.i("onCreate", "Client Started. Now checking for updates...");
 
-        StringRequest ExampleStringRequest = new StringRequest(Request.Method.GET, updateUrl, new Response.Listener<>() // Again, we don't need to specify a string here
-        {
-            @Override
-            public void onResponse(String response)
+        // Again, we don't need to specify a string here
+        StringRequest ExampleStringRequest = new StringRequest(Request.Method.GET, updateUrl, response -> {
+            if (fileExists(MainActivity.this, "checkCode.dat"))
             {
-                if (fileExists(MainActivity.this, "checkCode.dat"))
+                if (!readFile(MainActivity.this, "checkCode.dat").strip().equals(response.strip()))
                 {
-                    if (!readFile(MainActivity.this, "checkCode.dat").strip().equals(response.strip()))
-                    {
-                        saveToFile(MainActivity.this, "checkCode.dat", response.strip());
-                        newUpdate(MainActivity.this, response.strip());
-                    }
-                }
-                else
-                {
-                    saveToFile(MainActivity.this, "checkCode.dat", response);
-                    newUpdate(MainActivity.this, response);
+                    saveToFile(MainActivity.this, "checkCode.dat", response.strip());
+                    newUpdate(MainActivity.this, response.strip());
                 }
             }
-        },new Response.ErrorListener()
-        {
-            @Override
-            public void onErrorResponse(VolleyError e)
+            else
             {
-                android.util.Log.i("onCreate", "Failed to check for updates " + e);
-                Snackbar snackbar = Snackbar.make(coordinatorLayout,
-                        "Something went wrong while checking for updates!", Snackbar.LENGTH_LONG);
-                snackbar.show();
+                saveToFile(MainActivity.this, "checkCode.dat", response);
+                newUpdate(MainActivity.this, response);
             }
+        }, e -> {
+            android.util.Log.i("onCreate", "Failed to check for updates " + e);
+            Snackbar snackbar = Snackbar.make(coordinatorLayout,
+                    "Something went wrong while checking for updates!", Snackbar.LENGTH_LONG);
+            snackbar.show();
         });
 
         ExampleRequestQueue.add(ExampleStringRequest);
 
         android.util.Log.i("onCreate", "Now checking for notices");
 
-        StringRequest NoticesStringRequest = new StringRequest(Request.Method.GET, noticesUrl, new Response.Listener<>() // We don't need to specify a string here.
-        {
-            @Override
-            public void onResponse(String response)
+        // We don't need to specify a string here.
+        StringRequest NoticesStringRequest = new StringRequest(Request.Method.GET, noticesUrl, response -> {
+            try
             {
-                try
-                {
-                    String regex = ";";
-                    String[] splitNotices;
+                String regex = ";";
+                String[] splitNotices;
 
-                    splitNotices = response.split(regex);
+                splitNotices = response.split(regex);
 
-                    String seenNotices = readFile(MainActivity.this, "seenNotices.dat").strip();
-                    if (!seenNotices.contains(splitNotices[3]) && !splitNotices[0].equals("NONE"))
-                    {
-                        saveToFile(MainActivity.this, "seenNotices.dat", splitNotices[3]);
-                        showNewNotice(MainActivity.this, splitNotices[0], splitNotices[1], splitNotices[2]);
-                    }
-                }
-                catch (Exception e)
+                String seenNotices = readFile(MainActivity.this, "seenNotices.dat").strip();
+                if (!seenNotices.contains(splitNotices[3]) && !splitNotices[0].equals("NONE"))
                 {
-                    android.util.Log.i("onCreate", "Failed to decode notices - " + e);
-                    Snackbar snackbar = Snackbar.make(coordinatorLayout,
-                            "Something went wrong while checking for notices! (Decode error)", Snackbar.LENGTH_LONG);
-                    snackbar.show();
+                    saveToFile(MainActivity.this, "seenNotices.dat", splitNotices[3]);
+                    showNewNotice(MainActivity.this, splitNotices[0], splitNotices[1], splitNotices[2]);
                 }
             }
-        }, new Response.ErrorListener()
-        {
-            @Override
-            public void onErrorResponse(VolleyError e)
+            catch (Exception e)
             {
-                android.util.Log.i("onCreate", "Failed to get current notices - " + e);
+                android.util.Log.i("onCreate", "Failed to decode notices - " + e);
                 Snackbar snackbar = Snackbar.make(coordinatorLayout,
-                        "Something went wrong while checking for notices!", Snackbar.LENGTH_LONG);
+                        "Something went wrong while checking for notices! (Decode error)", Snackbar.LENGTH_LONG);
                 snackbar.show();
             }
+        }, e -> {
+            android.util.Log.i("onCreate", "Failed to get current notices - " + e);
+            Snackbar snackbar = Snackbar.make(coordinatorLayout,
+                    "Something went wrong while checking for notices!", Snackbar.LENGTH_LONG);
+            snackbar.show();
         });
 
         ExampleRequestQueue.add(NoticesStringRequest);
