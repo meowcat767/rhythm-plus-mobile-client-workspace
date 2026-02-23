@@ -268,7 +268,7 @@ public class MainActivity extends AppCompatActivity
         android.util.Log.i("onCreate", "Client Started. Now checking for updates...");
 
         String url = updateUrl;
-        StringRequest ExampleStringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>()
+        StringRequest ExampleStringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<>() // Again, we don't need to specify a string here
         {
             @Override
             public void onResponse(String response)
@@ -530,16 +530,24 @@ public class MainActivity extends AppCompatActivity
         }
         else
         {
-            showDialogBox(context, title, text, "Ok", "More", null, new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    Toast.makeText(context, "Opening the link provided now!", Toast.LENGTH_SHORT).show();
-                    context.startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(url)));
-                }
-            });
+            showDialogBox(
+                    context,
+                    title,
+                    text,
+                    "Ok",
+                    "More",
+                    null,
+                    ((dialog, which) -> {
+                        Toast.makeText(context,
+                                "Opening the link!",
+                                Toast.LENGTH_SHORT
+                                ).show();
+
+                        context.startActivity(
+                                new Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                        );
+                    })
+            );
         }
     }
 }
