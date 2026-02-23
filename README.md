@@ -1,9 +1,4 @@
-![Checks](https://img.shields.io/github/check-runs/splamei/rhythm-plus-mobile-client/main)  
-![Issues](https://img.shields.io/github/issues/splamei/rhythm-plus-mobile-client)  
-![License](https://img.shields.io/github/license/splamei/rhythm-plus-mobile-client)  
-![Release](https://img.shields.io/github/v/release/splamei/rhythm-plus-mobile-client)  
-![Commits since release](https://img.shields.io/github/commits-since/splamei/rhythm-plus-mobile-client/latest)  
-![Repo Size](https://img.shields.io/github/repo-size/splamei/rhythm-plus-mobile-client)
+![Checks](https://img.shields.io/github/check-runs/splamei/rhythm-plus-mobile-client/main)  ![Issues](https://img.shields.io/github/issues/splamei/rhythm-plus-mobile-client)  ![License](https://img.shields.io/github/license/splamei/rhythm-plus-mobile-client)  ![Release](https://img.shields.io/github/v/release/splamei/rhythm-plus-mobile-client)  ![Commits since release](https://img.shields.io/github/commits-since/splamei/rhythm-plus-mobile-client/latest)  ![Repo Size](https://img.shields.io/github/repo-size/splamei/rhythm-plus-mobile-client)
 
 # Rhythm Plus - Splamei Client (New - Mobile)
 ## If your looking for the Windows Client, find it [here](https://github.com/splamei/rplus-pc-client)
