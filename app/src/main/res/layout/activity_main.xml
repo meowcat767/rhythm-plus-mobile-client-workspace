@@ -89,7 +89,7 @@
         android:id="@+id/settingsButton"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:layout_gravity="top|end"
+        android:layout_gravity="top|center"
         android:layout_margin="16dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         app:tint="@android:color/white"
