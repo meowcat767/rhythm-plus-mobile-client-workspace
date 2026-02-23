@@ -245,7 +245,7 @@ public class MainActivity extends AppCompatActivity
                 {
                     if (lockSso)
                     {
-                        showDialogBox(MainActivity.this, "You can't do that", "Using signing in that way is disabled in this release of the client. Please sign in via email instead.\n\nIf you need to sign in this way, please use a release that support signing in this way or convert your account to use email sign in\n\nFor more information, please email us or join our Discord.", "Ok", "", null, null);
+                        showDialogBox(MainActivity.this, "You can't do that", "Signing in that way is disabled in this release of the client. Please sign in via email instead.\n\nIf you need to sign in this way, please use a release that supports signing in this way or convert your account to use email sign in\n\nFor more information, please email us or join our Discord.", "Ok", "", null, null);
 
                         return true;
                     }
