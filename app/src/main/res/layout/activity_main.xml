@@ -96,5 +96,11 @@
         android:alpha="0.8"
         android:elevation="8dp"
         app:srcCompat="@drawable/cog"/>
+  
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:visibility="gone"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -11,8 +11,10 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -38,6 +40,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import android.view.KeyEvent;
 import android.content.Intent;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -57,19 +60,20 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity
 {
     // Main data
-    public static String myVerCode = "1003";
+    public static String myVerCode = "1004";
 
     // Url and Webview data
-    public static String urlToLoad = "https://rhythm-plus.com"; // Full URL to load
-    public static String mainUrl = "https://rhythm-plus.com"; // Must start with URL to allow loading
+    public static String urlToLoad = "https://rhythm-plus.com/"; // Full URL to load
+    public static String mainUrl = "https://rhythm-plus.com/"; // Must start with URL to allow loading
     public static String urlForNewTab = "auth.rhythm-plus.com"; // Must contain to open the second tab
     public static String urlForNewTabClosure = "auth.rhythm-plus.com/__/auth/handler?state="; // Must contain to close the second tab and return
-    public static String webView1UserAgent = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) RhythmPlus-SplameiClient/1003 Mobile Safari/537.36";
-    public static String webView2UserAgent = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6943.89 Mobile Safari/537.36";
+    public static String webView1UserAgent = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) RhythmPlus-SplameiClient/1004 Mobile Safari/537.36";
+    public static String webView2UserAgent = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.76 Mobile Safari/537.36";
     public static String updateUrl = "https://www.veemo.uk/net/r-plus/mobile/ver";
     public static String noticesUrl = "https://www.veemo.uk/net/r-plus/mobile/notices";
 
@@ -86,13 +90,16 @@ public class MainActivity extends AppCompatActivity
 
     CoordinatorLayout coordinatorLayout;
 
+    LinearProgressIndicator progressIndicator;
+
     boolean hasShownAuth = false;
+    boolean pageLoaded = false;
     public static final String ERROR_CHANNEL_ID = "error_channel";
     public static final String MISC_CHANNEL_ID = "misc_channel";
 
     RequestQueue ExampleRequestQueue;
 
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint({"SetJavaScriptEnabled", "QueryPermissionsNeeded"})
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -116,7 +123,7 @@ public class MainActivity extends AppCompatActivity
 
         try {
             Intent aboutIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://rhythm-plus.com"));
-            Intent licenceIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/splamei/rplus-mobile-client/blob/master/LICENSE"));
+            Intent licenceIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/splamei/rhythm-plus-mobile-client/blob/master/LICENSE"));
 
             // Only create shortcut if there's an app to handle it
             if (aboutIntent.resolveActivity(getPackageManager()) != null) {
@@ -148,6 +155,7 @@ public class MainActivity extends AppCompatActivity
 
         ExampleRequestQueue = Volley.newRequestQueue(MainActivity.this);
         coordinatorLayout = findViewById(R.id.main);
+        progressIndicator = findViewById(R.id.progressBar);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
         {
@@ -171,10 +179,10 @@ public class MainActivity extends AppCompatActivity
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setDomStorageEnabled(true);
         webView.setHorizontalScrollBarEnabled(false);
-        webView.getSettings().setDatabaseEnabled(true);
+        webView.getSettings().setDatabaseEnabled(false);
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
-        webView.getSettings().setAllowFileAccess(true);
+        webView.getSettings().setAllowFileAccess(false);
         webView.setScrollbarFadingEnabled(false);
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         webView.setInitialScale(1);
@@ -192,10 +200,10 @@ public class MainActivity extends AppCompatActivity
         loginView.getSettings().setLoadWithOverviewMode(true);
         loginView.getSettings().setDomStorageEnabled(true);
         loginView.setHorizontalScrollBarEnabled(false);
-        loginView.getSettings().setDatabaseEnabled(true);
+        loginView.getSettings().setDatabaseEnabled(false);
         loginView.getSettings().setBuiltInZoomControls(true);
         loginView.getSettings().setDisplayZoomControls(false);
-        loginView.getSettings().setAllowFileAccess(true);
+        loginView.getSettings().setAllowFileAccess(false);
         loginView.setScrollbarFadingEnabled(false);
         loginView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         loginView.setInitialScale(1);
@@ -206,6 +214,22 @@ public class MainActivity extends AppCompatActivity
         settingsButton.setOnClickListener(v -> {
             SettingsMenu.showMenu(MainActivity.this);
         });
+        
+        android.util.Log.i("onCreate", "WebView setting created. Now setting up the wait handler");
+
+        Handler handler = new Handler();
+        Runnable slowLoadRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (!pageLoaded){
+                    Snackbar snackbar = Snackbar.make(coordinatorLayout,
+                            "It's taking a while to load... Don't worry, we're still working hard", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                }
+            }
+        };
+
+        android.util.Log.i("onCreate", "Wait handler made, now making the web view clients");
 
         webViewClient = new WebViewClient()
         {
@@ -221,6 +245,7 @@ public class MainActivity extends AppCompatActivity
                 else if (url.contains(urlForNewTab))
                 {
                     hasShownAuth = false;
+                    pageLoaded = false;
 
                     webView.setVisibility(View.GONE);
                     loginView.setVisibility(View.VISIBLE);
@@ -234,6 +259,8 @@ public class MainActivity extends AppCompatActivity
                             secondTabLoadToastMessage, Snackbar.LENGTH_LONG);
                     snackbar.show();
 
+                    handler.postDelayed(slowLoadRunnable, 8000);
+
                     return true;
                 }
 
@@ -242,26 +269,43 @@ public class MainActivity extends AppCompatActivity
                 view.getContext().startActivity(intent);
                 return true;
             }
-
-            @Override
-            public void onPageFinished(WebView view, String url)
-            {
-                ImageView imageView = findViewById(R.id.splashImg);
-                imageView.setVisibility(View.INVISIBLE);
-
-                ImageView backImg = findViewById(R.id.backImg);
-                backImg.setVisibility(View.INVISIBLE);
-
-                webView.setVisibility(View.VISIBLE);
-            }
         };
+
+        webView.setWebChromeClient(new WebChromeClient(){
+            @Override
+            public void onProgressChanged(WebView view, int newProgress)
+            {
+                if (newProgress < 100)
+                {
+                    progressIndicator.setVisibility(View.VISIBLE);
+                    progressIndicator.setProgress(newProgress);
+                }
+                else
+                {
+                    progressIndicator.setProgress(100);
+                    progressIndicator.setVisibility(View.GONE);
+
+                    if (Objects.requireNonNull(webView.getUrl()).equals(mainUrl)) {
+                        ImageView imageView = findViewById(R.id.splashImg);
+                        imageView.setVisibility(View.INVISIBLE);
+
+                        ImageView backImg = findViewById(R.id.backImg);
+                        backImg.setVisibility(View.INVISIBLE);
+
+                        webView.setVisibility(View.VISIBLE);
+
+                        pageLoaded = true;
+                        handler.removeCallbacks(slowLoadRunnable);
+                    }
+                }
+            }
+        });
 
         loginClient = new WebViewClient()
         {
             @Override
             public void onPageFinished(WebView view, String url)
             {
-
                 if (url.contains(urlForNewTabClosure))
                 {
                     webView.setVisibility(View.VISIBLE);
@@ -276,13 +320,31 @@ public class MainActivity extends AppCompatActivity
             }
         };
 
+        loginView.setWebChromeClient(new WebChromeClient(){
+            @Override
+            public void onProgressChanged(WebView view, int newProgress)
+            {
+                if (newProgress < 100)
+                {
+                    progressIndicator.setVisibility(View.VISIBLE);
+                    progressIndicator.setProgress(newProgress);
+                }
+                else
+                {
+                    progressIndicator.setProgress(100);
+                    progressIndicator.setVisibility(View.GONE);
+                }
+            }
+        });
+
         webView.setWebViewClient(webViewClient);
         webView.loadUrl(urlToLoad);
 
+        handler.postDelayed(slowLoadRunnable, 8000);
+
         android.util.Log.i("onCreate", "Client Started. Now checking for updates...");
 
-        String url = updateUrl;
-        StringRequest ExampleStringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<>() // Again, we don't need to specify a string here
+        StringRequest ExampleStringRequest = new StringRequest(Request.Method.GET, updateUrl, new Response.Listener<>() // Again, we don't need to specify a string here
         {
             @Override
             public void onResponse(String response)
@@ -317,8 +379,7 @@ public class MainActivity extends AppCompatActivity
 
         android.util.Log.i("onCreate", "Now checking for notices");
 
-        String urlNotices = noticesUrl;
-        StringRequest NoticesStringRequest = new StringRequest(Request.Method.GET, urlNotices, new Response.Listener<>() // We don't need to specify a string here.
+        StringRequest NoticesStringRequest = new StringRequest(Request.Method.GET, noticesUrl, new Response.Listener<>() // We don't need to specify a string here.
         {
             @Override
             public void onResponse(String response)
