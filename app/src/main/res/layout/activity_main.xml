@@ -89,9 +89,10 @@
             android:layout_gravity="top|end"
             android:layout_margin="16dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Settings"
-            android:src="@drawable/cog"
-            android:elevation="8dp"/>
+            app:tint="@android:color/white"
+            android:alpha="0.8"
+            android:elevation="8dp"
+            app:srcCompat="@drawable/cog"/>
     </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
