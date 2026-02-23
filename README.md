@@ -20,7 +20,7 @@ Rhythm Plus is a web-based vertical scrolling rhythm game (VSRG), you can make, 
 ## Compatibility
 - The Android Version needs to be Android 8.0 Oreo or above (API Level 28+)
 - Your device must also have the Android System WebView installed otherwise the client will crash
-- Also you need an active internet connection and to be able to access the Rhythm Plus website (rhythm-plus.com) and the Splamei Network (veemo.uk)
+- Also, you need an active internet connection and to be able to access the Rhythm Plus website (rhythm-plus.com) and the Splamei Network (veemo.uk)
 
 ## Installation
 
@@ -36,7 +36,7 @@ If your using this code to make your own custom client whether that be for Rhyth
  - Replace or remove the update handling (and notice feature if you want)
  - Change the package name
  - If the client isn't for Rhythm Plus, please change the icons the client uses
- - Because this client is currently under the MIT Licence, you **must** acknowledge the copyright of the client and the MIT Licence. You do not have to place your client under the MIT Licence
+ - Because this client is currently under the MIT License, you **must** acknowledge the copyright of the client and the MIT License. You do not have to place your client under the MIT License
 ## Contributing
 I would love for people to help the clients development so any little contribution would go a long way!
 You could contribute by:
@@ -65,8 +65,8 @@ This may not fix the issues, if so, please create a GitHub issue with the detain
 Currently, no. I do have plan to have it on the play store but that won't happen for at least a few years to allow to client to be in a usable state.
 ### Q) I have an older Android device then 8.0 Oreo. Can I still use the client?
 No. Because the client uses functions that only work on SDK Version 28+, any older Android device won't be able to run it. Even if you tried. You may want to try the [legacy version](https://github.com/splamei/rhythm-plus-splamei-mobile-client) of the client but that won't be updated anymore.
-### Q) Will the client come to other platforms? (Windows, MacOS, iOS, Linux)
-The client is available for Windows and can be also found on [GitHub](https://github.com/splamei/rplus-pc-client) and might come to MacOS and Linux but not iOS since it would need to be sideloaded, which can only be done in the EU right now, and to get it on the App Store would require me to play ~$50 a year to Apple (which I don't want to do)
+### Q) Will the client come to other platforms? (Windows, macOS, iOS, Linux)
+The client is available for Windows and can be also found on [GitHub](https://github.com/splamei/rplus-pc-client) and might come to macOS and Linux. It won't come to iOS since it would need to be sideloaded plus other difficulties making it too difficult.
 ### Q) I want to make my own client. Can I do that?
 Yes! Just make sure you follow everything stated in the 'Making your own Client' section
 ### Q) Is this client official?
