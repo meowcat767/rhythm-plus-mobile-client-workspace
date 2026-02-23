@@ -264,12 +264,15 @@ public class MainActivity extends AppCompatActivity
 
         webView.setWebChromeClient(new WebChromeClient(){
             @Override
-            public void onProgressChanged(WebView view, int newProgress){
-                if (newProgress < 100){
+            public void onProgressChanged(WebView view, int newProgress)
+            {
+                if (newProgress < 100)
+                {
                     progressIndicator.setVisibility(View.VISIBLE);
                     progressIndicator.setProgress(newProgress);
                 }
-                else{
+                else
+                {
                     progressIndicator.setProgress(100);
                     progressIndicator.setVisibility(View.GONE);
 
@@ -292,7 +295,6 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onPageFinished(WebView view, String url)
             {
-
                 if (url.contains(urlForNewTabClosure))
                 {
                     webView.setVisibility(View.VISIBLE);
@@ -306,6 +308,23 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         };
+
+        loginView.setWebChromeClient(new WebChromeClient(){
+            @Override
+            public void onProgressChanged(WebView view, int newProgress)
+            {
+                if (newProgress < 100)
+                {
+                    progressIndicator.setVisibility(View.VISIBLE);
+                    progressIndicator.setProgress(newProgress);
+                }
+                else
+                {
+                    progressIndicator.setProgress(100);
+                    progressIndicator.setVisibility(View.GONE);
+                }
+            }
+        });
 
         webView.setWebViewClient(webViewClient);
         webView.loadUrl(urlToLoad);
