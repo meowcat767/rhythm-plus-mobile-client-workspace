@@ -85,4 +85,10 @@ public class SettingsMenu {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         return prefs.getBoolean(KEY_DEV_MODE, false);
     }
+
+    public static boolean isInv2Mode(Context context)
+    {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        return prefs.getBoolean(KEY_V2_MODE, false);
+    }
 }

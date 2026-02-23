@@ -83,9 +83,6 @@ public class MainActivity extends AppCompatActivity
     public static String secondTabNormalCloseMessage = "Welcome to Rhythm Plus";
     public static String secondTabLoadToastMessage = "Please wait while the sign-in page loads";
 
-    private static final String PREFS_NAME = "rplus_config";
-    private static final String KEY_V2_MODE = "version_two_mode";
-
 
 
     WebView webView;
@@ -122,9 +119,6 @@ public class MainActivity extends AppCompatActivity
         android.util.Log.i("onCreate", "Client starting...");
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-        SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        boolean v2ModeEnabled = prefs.getBoolean(KEY_V2_MODE, false);
 
         createChannel(this, MISC_CHANNEL_ID, "Misc", "Other notifications used by the client", NotificationManager.IMPORTANCE_DEFAULT);
         createChannel(this, ERROR_CHANNEL_ID, "Errors", "Notifications sent when errors occur", NotificationManager.IMPORTANCE_HIGH);
@@ -352,7 +346,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        if (v2ModeEnabled)
+        if (SettingsMenu.isInv2Mode(this))
         {
             mainUrl = v2Url;
             urlToLoad = v2Url;
