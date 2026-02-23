@@ -33,6 +33,7 @@ import androidx.core.view.WindowInsetsCompat;
 import android.content.DialogInterface;
 
 import android.webkit.WebSettings;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.view.KeyEvent;
@@ -47,6 +48,7 @@ import com.android.volley.toolbox.Volley;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
+import com.splamei.rplus.client.ui.error.WebViewErrorHandler;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -156,6 +158,8 @@ public class MainActivity extends AppCompatActivity
         android.util.Log.i("onCreate", "Starting WebView....");
 
         webView = findViewById(R.id.mainWeb);
+        FrameLayout errorLayout = findViewById(R.id.errorLayout);
+        webView.setWebViewClient(new WebViewErrorHandler(this, webView, errorLayout));
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setAllowContentAccess(true);
         webView.getSettings().setUseWideViewPort(true);
