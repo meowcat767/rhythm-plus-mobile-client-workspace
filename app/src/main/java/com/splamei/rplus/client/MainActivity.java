@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity
     // Url and Webview data
     public static String urlToLoad = "https://rhythm-plus.com/"; // Full URL to load
     public static String mainUrl = "https://rhythm-plus.com/"; // Must start with URL to allow loading
+    public static String gameUrl = "https://rhythm-plus.com/game/"; // Must start with URL to hide settings
     public static String urlForNewTab = "auth.rhythm-plus.com"; // Must contain to open the second tab
     public static String urlForNewTabClosure = "auth.rhythm-plus.com/__/auth/handler?state="; // Must contain to close the second tab and return
     public static String webView1UserAgent = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) RhythmPlus-SplameiClient/1004 Mobile Safari/537.36";
@@ -278,7 +279,10 @@ public class MainActivity extends AppCompatActivity
                     progressIndicator.setProgress(100);
                     progressIndicator.setVisibility(View.GONE);
 
-                    if (Objects.requireNonNull(webView.getUrl()).equals(mainUrl)) {
+                    String webViewUrl = webView.getUrl();
+
+                    if (Objects.requireNonNull(webViewUrl).equals(mainUrl))
+                    {
                         ImageView imageView = findViewById(R.id.splashImg);
                         imageView.setVisibility(View.INVISIBLE);
 
@@ -289,6 +293,15 @@ public class MainActivity extends AppCompatActivity
 
                         pageLoaded = true;
                         handler.removeCallbacks(slowLoadRunnable);
+                    }
+
+                    if (webViewUrl.startsWith(gameUrl))
+                    {
+                        settingsButton.setVisibility(View.INVISIBLE);
+                    }
+                    else
+                    {
+                        settingsButton.setVisibility(View.VISIBLE);
                     }
                 }
             }
