@@ -82,6 +82,8 @@ public class MainActivity extends AppCompatActivity
     public static String secondTabNormalCloseMessage = "Welcome to Rhythm Plus";
     public static String secondTabLoadToastMessage = "Please wait while the sign-in page loads";
 
+    public boolean lockSso = false;
+
 
 
     WebView webView;
@@ -240,6 +242,13 @@ public class MainActivity extends AppCompatActivity
                 }
                 else if (url.contains(urlForNewTab))
                 {
+                    if (lockSso)
+                    {
+                        showDialogBox(MainActivity.this, "You can't do that", "Using signing in that way is disabled in this release of the client. Please sign in via email instead.\n\nIf you need to sign in this way, please use a release that support signing in this way or convert your account to use email sign in\n\nFor more information, please email us or join our Discord.", "Ok", "", null, null);
+
+                        return true;
+                    }
+
                     hasShownAuth = false;
                     pageLoaded = false;
 
