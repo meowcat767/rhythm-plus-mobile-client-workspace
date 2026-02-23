@@ -400,7 +400,7 @@ public class MainActivity extends AppCompatActivity
 
     public static void sendNotification(Context context, final String ID, String title, String message, int importance, int id)
     {
-        android.util.Log.i("sendNotification", "Sending notifcation - '" + title + "' - '" + message + "'");
+        android.util.Log.i("sendNotification", "Sending notification - '" + title + "' - '" + message + "'");
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, ID)
                 .setContentTitle(title)
