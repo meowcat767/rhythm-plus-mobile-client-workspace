@@ -82,17 +82,19 @@
             android:layout_gravity="center|bottom"
             android:layout_marginBottom="50dp"/>
 
-        <ImageButton
-            android:id="@+id/settingsButton"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_gravity="top|end"
-            android:layout_margin="16dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            app:tint="@android:color/white"
-            android:alpha="0.8"
-            android:elevation="8dp"
-            app:srcCompat="@drawable/cog"/>
+
     </FrameLayout>
+
+    <ImageButton
+        android:id="@+id/settingsButton"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="top|end"
+        android:layout_margin="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:tint="@android:color/white"
+        android:alpha="0.8"
+        android:elevation="8dp"
+        app:srcCompat="@drawable/cog"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
