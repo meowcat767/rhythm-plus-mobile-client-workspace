@@ -58,6 +58,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -65,8 +66,8 @@ public class MainActivity extends AppCompatActivity
     public static String myVerCode = "1004";
 
     // Url and Webview data
-    public static String urlToLoad = "https://rhythm-plus.com"; // Full URL to load
-    public static String mainUrl = "https://rhythm-plus.com"; // Must start with URL to allow loading
+    public static String urlToLoad = "https://rhythm-plus.com/"; // Full URL to load
+    public static String mainUrl = "https://rhythm-plus.com/"; // Must start with URL to allow loading
     public static String urlForNewTab = "auth.rhythm-plus.com"; // Must contain to open the second tab
     public static String urlForNewTabClosure = "auth.rhythm-plus.com/__/auth/handler?state="; // Must contain to close the second tab and return
     public static String webView1UserAgent = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) RhythmPlus-SplameiClient/1003 Mobile Safari/537.36";
@@ -276,16 +277,18 @@ public class MainActivity extends AppCompatActivity
                     progressIndicator.setProgress(100);
                     progressIndicator.setVisibility(View.GONE);
 
-                    ImageView imageView = findViewById(R.id.splashImg);
-                    imageView.setVisibility(View.INVISIBLE);
+                    if (Objects.requireNonNull(webView.getUrl()).equals(mainUrl)) {
+                        ImageView imageView = findViewById(R.id.splashImg);
+                        imageView.setVisibility(View.INVISIBLE);
 
-                    ImageView backImg = findViewById(R.id.backImg);
-                    backImg.setVisibility(View.INVISIBLE);
+                        ImageView backImg = findViewById(R.id.backImg);
+                        backImg.setVisibility(View.INVISIBLE);
 
-                    webView.setVisibility(View.VISIBLE);
+                        webView.setVisibility(View.VISIBLE);
 
-                    pageLoaded = true;
-                    handler.removeCallbacks(slowLoadRunnable);
+                        pageLoaded = true;
+                        handler.removeCallbacks(slowLoadRunnable);
+                    }
                 }
             }
         });
