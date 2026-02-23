@@ -260,21 +260,6 @@ public class MainActivity extends AppCompatActivity
                 view.getContext().startActivity(intent);
                 return true;
             }
-
-            @Override
-            public void onPageFinished(WebView view, String url)
-            {
-                ImageView imageView = findViewById(R.id.splashImg);
-                imageView.setVisibility(View.INVISIBLE);
-
-                ImageView backImg = findViewById(R.id.backImg);
-                backImg.setVisibility(View.INVISIBLE);
-
-                webView.setVisibility(View.VISIBLE);
-
-                pageLoaded = true;
-                handler.removeCallbacks(slowLoadRunnable);
-            }
         };
 
         webView.setWebChromeClient(new WebChromeClient(){
@@ -287,6 +272,17 @@ public class MainActivity extends AppCompatActivity
                 else{
                     progressIndicator.setProgress(100);
                     progressIndicator.setVisibility(View.GONE);
+
+                    ImageView imageView = findViewById(R.id.splashImg);
+                    imageView.setVisibility(View.INVISIBLE);
+
+                    ImageView backImg = findViewById(R.id.backImg);
+                    backImg.setVisibility(View.INVISIBLE);
+
+                    webView.setVisibility(View.VISIBLE);
+
+                    pageLoaded = true;
+                    handler.removeCallbacks(slowLoadRunnable);
                 }
             }
         });
