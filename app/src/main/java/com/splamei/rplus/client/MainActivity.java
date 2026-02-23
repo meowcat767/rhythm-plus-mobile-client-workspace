@@ -158,7 +158,6 @@ public class MainActivity extends AppCompatActivity
         webView = findViewById(R.id.mainWeb);
         FrameLayout errorLayout = findViewById(R.id.errorLayout);
         webView.setWebViewClient(new WebViewErrorHandler(this, webView, errorLayout));
-        webView = findViewById(R.id.mainWeb);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setAllowContentAccess(true);
         webView.getSettings().setUseWideViewPort(true);
