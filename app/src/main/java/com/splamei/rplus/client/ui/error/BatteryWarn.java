@@ -13,7 +13,7 @@ public class BatteryWarn {
     public static void checkBatteryLevel(Context context) {
         // Get battery info
         IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-        Intent batteryStatus = context.registerReceiver(null, filter); // ✅ use context
+        Intent batteryStatus = context.registerReceiver(null, filter);
 
         if (batteryStatus != null) {
             int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
