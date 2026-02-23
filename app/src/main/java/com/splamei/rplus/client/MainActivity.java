@@ -336,8 +336,7 @@ public class MainActivity extends AppCompatActivity
 
         android.util.Log.i("onCreate", "Client Started. Now checking for updates...");
 
-        String url = updateUrl;
-        StringRequest ExampleStringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<>() // Again, we don't need to specify a string here
+        StringRequest ExampleStringRequest = new StringRequest(Request.Method.GET, updateUrl, new Response.Listener<>() // Again, we don't need to specify a string here
         {
             @Override
             public void onResponse(String response)
@@ -372,8 +371,7 @@ public class MainActivity extends AppCompatActivity
 
         android.util.Log.i("onCreate", "Now checking for notices");
 
-        String urlNotices = noticesUrl;
-        StringRequest NoticesStringRequest = new StringRequest(Request.Method.GET, urlNotices, new Response.Listener<>() // We don't need to specify a string here.
+        StringRequest NoticesStringRequest = new StringRequest(Request.Method.GET, noticesUrl, new Response.Listener<>() // We don't need to specify a string here.
         {
             @Override
             public void onResponse(String response)
