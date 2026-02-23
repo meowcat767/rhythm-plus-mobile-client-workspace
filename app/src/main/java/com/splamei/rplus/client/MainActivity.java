@@ -56,7 +56,7 @@ import java.io.IOException;
 public class MainActivity extends AppCompatActivity
 {
     // Main data
-    public static String myVerCode = "1003";
+    public static String myVerCode = "1004";
 
     // Url and Webview data
     public static String urlToLoad = "https://rhythm-plus.com"; // Full URL to load
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity
 
     RequestQueue ExampleRequestQueue;
 
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint({"SetJavaScriptEnabled", "QueryPermissionsNeeded"})
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity
 
         try {
             Intent aboutIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://rhythm-plus.com"));
-            Intent licenceIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/splamei/rplus-mobile-client/blob/master/LICENSE"));
+            Intent licenceIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/splamei/rhythm-plus-mobile-client/blob/master/LICENSE"));
 
             // Only create shortcut if there's an app to handle it
             if (aboutIntent.resolveActivity(getPackageManager()) != null) {
@@ -163,10 +163,10 @@ public class MainActivity extends AppCompatActivity
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setDomStorageEnabled(true);
         webView.setHorizontalScrollBarEnabled(false);
-        webView.getSettings().setDatabaseEnabled(true);
+        webView.getSettings().setDatabaseEnabled(false);
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
-        webView.getSettings().setAllowFileAccess(true);
+        webView.getSettings().setAllowFileAccess(false);
         webView.setScrollbarFadingEnabled(false);
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         webView.setInitialScale(1);
@@ -184,10 +184,10 @@ public class MainActivity extends AppCompatActivity
         loginView.getSettings().setLoadWithOverviewMode(true);
         loginView.getSettings().setDomStorageEnabled(true);
         loginView.setHorizontalScrollBarEnabled(false);
-        loginView.getSettings().setDatabaseEnabled(true);
+        loginView.getSettings().setDatabaseEnabled(false);
         loginView.getSettings().setBuiltInZoomControls(true);
         loginView.getSettings().setDisplayZoomControls(false);
-        loginView.getSettings().setAllowFileAccess(true);
+        loginView.getSettings().setAllowFileAccess(false);
         loginView.setScrollbarFadingEnabled(false);
         loginView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         loginView.setInitialScale(1);
