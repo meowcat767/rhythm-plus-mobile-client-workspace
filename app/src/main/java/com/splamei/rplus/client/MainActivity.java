@@ -503,9 +503,9 @@ public class MainActivity extends AppCompatActivity
         return file.exists();
     }
 
-    public static void newUpdate(Context context, String responce)
+    public static void newUpdate(Context context, String response)
     {
-        if (!myVerCode.contains(responce))
+        if (!myVerCode.contains(response))
         {
             android.util.Log.i("newUpdate", "New update to the client! Showing user");
 
