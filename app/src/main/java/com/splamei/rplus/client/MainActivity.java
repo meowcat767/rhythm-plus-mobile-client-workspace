@@ -509,16 +509,31 @@ public class MainActivity extends AppCompatActivity
         {
             android.util.Log.i("newUpdate", "New update to the client! Showing user");
 
-            showDialogBox(context, "New update!", "There is a new update to the client. It's recommended that you update for the latest fixes and changes as not updating can break the client!", "Update", "Later", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                    Toast.makeText(context, "GitHub should now open via the app or website", Toast.LENGTH_SHORT).show();
-                    context.startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("https://github.com/splamei/rhythm-plus-mobile-client/releases/")));
-                    System.exit(0);
-                }
-            }, null);
+            showDialogBox(
+                    context,
+                    "New update!",
+                    "There is a new update to the client. It's recommended that you update for the latest fixes and changes as not updating can break the client!",
+                    "Update",
+                    "Later",
+                    (dialog, which) -> {
+
+                        Toast.makeText(
+                                context,
+                                "GitHub should now open via the app or website",
+                                Toast.LENGTH_SHORT
+                        ).show();
+
+                        Intent intent = new Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://github.com/splamei/rplus-mobile-client/releases")
+                        );
+
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+
+                    },
+                    null   // 👈 THIS was missing (7th argument)
+            );
         }
     }
 
