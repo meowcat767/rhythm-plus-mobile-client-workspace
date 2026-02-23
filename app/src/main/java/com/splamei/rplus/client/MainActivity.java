@@ -35,6 +35,7 @@ import android.content.DialogInterface;
 
 import android.webkit.WebSettings;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.view.KeyEvent;
@@ -52,6 +53,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.splamei.rplus.client.ui.error.BatteryWarn;
 import com.splamei.rplus.client.ui.error.WebViewErrorHandler;
+import com.splamei.rplus.client.ui.settings.SettingsMenu;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -207,6 +209,12 @@ public class MainActivity extends AppCompatActivity
         loginView.setInitialScale(1);
         loginView.getSettings().setUserAgentString(webView2UserAgent);
 
+        ImageButton settingsButton = findViewById(R.id.settingsButton);
+        new SettingsMenu();
+        settingsButton.setOnClickListener(v -> {
+            SettingsMenu.showMenu(MainActivity.this);
+        });
+        
         android.util.Log.i("onCreate", "WebView setting created. Now setting up the wait handler");
 
         Handler handler = new Handler();
