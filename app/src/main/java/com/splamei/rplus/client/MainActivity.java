@@ -18,6 +18,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.content.SharedPreferences;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -69,6 +70,8 @@ public class MainActivity extends AppCompatActivity
     public static String urlToLoad = "https://rhythm-plus.com/"; // Full URL to load
     public static String mainUrl = "https://rhythm-plus.com/"; // Must start with URL to allow loading
     public static String gameUrl = "https://rhythm-plus.com/game/"; // Must start with URL to hide settings
+    public static String v2Url = "https://v2.rhythm-plus.com/";
+    public static String v2GameUrl = "https://v2.rhythm-plus.com/game/";
     public static String urlForNewTab = "auth.rhythm-plus.com"; // Must contain to open the second tab
     public static String urlForNewTabClosure = "auth.rhythm-plus.com/__/auth/handler?state="; // Must contain to close the second tab and return
     public static String webView1UserAgent = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) RhythmPlus-SplameiClient/1004 Mobile Safari/537.36";
@@ -79,6 +82,9 @@ public class MainActivity extends AppCompatActivity
     // String data
     public static String secondTabNormalCloseMessage = "Welcome to Rhythm Plus";
     public static String secondTabLoadToastMessage = "Please wait while the sign-in page loads";
+
+    private static final String PREFS_NAME = "rplus_config";
+    private static final String KEY_V2_MODE = "version_two_mode";
 
 
 
@@ -116,6 +122,9 @@ public class MainActivity extends AppCompatActivity
         android.util.Log.i("onCreate", "Client starting...");
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        boolean v2ModeEnabled = prefs.getBoolean(KEY_V2_MODE, false);
 
         createChannel(this, MISC_CHANNEL_ID, "Misc", "Other notifications used by the client", NotificationManager.IMPORTANCE_DEFAULT);
         createChannel(this, ERROR_CHANNEL_ID, "Errors", "Notifications sent when errors occur", NotificationManager.IMPORTANCE_HIGH);
@@ -342,6 +351,13 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
+
+        if (v2ModeEnabled)
+        {
+            mainUrl = v2Url;
+            urlToLoad = v2Url;
+            gameUrl = v2GameUrl;
+        }
 
         webView.setWebViewClient(webViewClient);
         webView.loadUrl(urlToLoad);
