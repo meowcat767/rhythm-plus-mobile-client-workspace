@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -38,6 +39,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import android.view.KeyEvent;
 import android.content.Intent;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -84,6 +86,8 @@ public class MainActivity extends AppCompatActivity
     WebViewClient loginClient;
 
     CoordinatorLayout coordinatorLayout;
+
+    LinearProgressIndicator progressIndicator;
 
     boolean hasShownAuth = false;
     boolean pageLoaded = false;
@@ -148,6 +152,7 @@ public class MainActivity extends AppCompatActivity
 
         ExampleRequestQueue = Volley.newRequestQueue(MainActivity.this);
         coordinatorLayout = findViewById(R.id.main);
+        progressIndicator = findViewById(R.id.progressBar);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
         {
@@ -271,6 +276,20 @@ public class MainActivity extends AppCompatActivity
                 handler.removeCallbacks(slowLoadRunnable);
             }
         };
+
+        webView.setWebChromeClient(new WebChromeClient(){
+            @Override
+            public void onProgressChanged(WebView view, int newProgress){
+                if (newProgress < 100){
+                    progressIndicator.setVisibility(View.VISIBLE);
+                    progressIndicator.setProgress(newProgress);
+                }
+                else{
+                    progressIndicator.setProgress(100);
+                    progressIndicator.setVisibility(View.GONE);
+                }
+            }
+        });
 
         loginClient = new WebViewClient()
         {
