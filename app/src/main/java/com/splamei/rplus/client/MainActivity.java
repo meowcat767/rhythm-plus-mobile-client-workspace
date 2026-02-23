@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity
     LinearProgressIndicator progressIndicator;
 
     boolean hasShownAuth = false;
+    boolean showingAuthPage = false;
     boolean pageLoaded = false;
     public static final String ERROR_CHANNEL_ID = "error_channel";
     public static final String MISC_CHANNEL_ID = "misc_channel";
@@ -251,9 +252,11 @@ public class MainActivity extends AppCompatActivity
 
                     hasShownAuth = false;
                     pageLoaded = false;
+                    showingAuthPage = true;
 
                     webView.setVisibility(View.GONE);
                     loginView.setVisibility(View.VISIBLE);
+                    settingsButton.setVisibility(View.INVISIBLE);
                     loginView.setWebViewClient(loginClient);
 
                     loginView.loadUrl(url);
@@ -306,7 +309,7 @@ public class MainActivity extends AppCompatActivity
                         handler.removeCallbacks(slowLoadRunnable);
                     }
 
-                    if (webViewUrl.startsWith(gameUrl))
+                    if (webViewUrl.startsWith(gameUrl) || showingAuthPage)
                     {
                         settingsButton.setVisibility(View.INVISIBLE);
                     }
@@ -327,12 +330,15 @@ public class MainActivity extends AppCompatActivity
                 {
                     webView.setVisibility(View.VISIBLE);
                     loginView.setVisibility(View.GONE);
+                    settingsButton.setVisibility(View.VISIBLE);
 
                     Snackbar snackbar = Snackbar.make(coordinatorLayout,
                             secondTabNormalCloseMessage, Snackbar.LENGTH_LONG);
                     snackbar.show();
 
                     loginView.loadUrl("about:blank");
+
+                    showingAuthPage = false;
                 }
             }
         };
@@ -456,6 +462,8 @@ public class MainActivity extends AppCompatActivity
                     {
                         webView.setVisibility(View.VISIBLE);
                         loginView.setVisibility(View.GONE);
+
+                        showingAuthPage = false;
 
                         loginView.loadUrl("about:blank");
                     }
