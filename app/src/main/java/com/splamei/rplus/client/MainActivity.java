@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -38,6 +39,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import android.view.KeyEvent;
 import android.content.Intent;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -56,6 +58,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -63,12 +66,12 @@ public class MainActivity extends AppCompatActivity
     public static String myVerCode = "1004";
 
     // Url and Webview data
-    public static String urlToLoad = "https://rhythm-plus.com"; // Full URL to load
-    public static String mainUrl = "https://rhythm-plus.com"; // Must start with URL to allow loading
+    public static String urlToLoad = "https://rhythm-plus.com/"; // Full URL to load
+    public static String mainUrl = "https://rhythm-plus.com/"; // Must start with URL to allow loading
     public static String urlForNewTab = "auth.rhythm-plus.com"; // Must contain to open the second tab
     public static String urlForNewTabClosure = "auth.rhythm-plus.com/__/auth/handler?state="; // Must contain to close the second tab and return
-    public static String webView1UserAgent = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) RhythmPlus-SplameiClient/1003 Mobile Safari/537.36";
-    public static String webView2UserAgent = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.6943.89 Mobile Safari/537.36";
+    public static String webView1UserAgent = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) RhythmPlus-SplameiClient/1004 Mobile Safari/537.36";
+    public static String webView2UserAgent = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.76 Mobile Safari/537.36";
     public static String updateUrl = "https://www.veemo.uk/net/r-plus/mobile/ver";
     public static String noticesUrl = "https://www.veemo.uk/net/r-plus/mobile/notices";
 
@@ -84,6 +87,8 @@ public class MainActivity extends AppCompatActivity
     WebViewClient loginClient;
 
     CoordinatorLayout coordinatorLayout;
+
+    LinearProgressIndicator progressIndicator;
 
     boolean hasShownAuth = false;
     boolean pageLoaded = false;
@@ -148,6 +153,7 @@ public class MainActivity extends AppCompatActivity
 
         ExampleRequestQueue = Volley.newRequestQueue(MainActivity.this);
         coordinatorLayout = findViewById(R.id.main);
+        progressIndicator = findViewById(R.id.progressBar);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
         {
@@ -255,29 +261,43 @@ public class MainActivity extends AppCompatActivity
                 view.getContext().startActivity(intent);
                 return true;
             }
-
-            @Override
-            public void onPageFinished(WebView view, String url)
-            {
-                ImageView imageView = findViewById(R.id.splashImg);
-                imageView.setVisibility(View.INVISIBLE);
-
-                ImageView backImg = findViewById(R.id.backImg);
-                backImg.setVisibility(View.INVISIBLE);
-
-                webView.setVisibility(View.VISIBLE);
-
-                pageLoaded = true;
-                handler.removeCallbacks(slowLoadRunnable);
-            }
         };
+
+        webView.setWebChromeClient(new WebChromeClient(){
+            @Override
+            public void onProgressChanged(WebView view, int newProgress)
+            {
+                if (newProgress < 100)
+                {
+                    progressIndicator.setVisibility(View.VISIBLE);
+                    progressIndicator.setProgress(newProgress);
+                }
+                else
+                {
+                    progressIndicator.setProgress(100);
+                    progressIndicator.setVisibility(View.GONE);
+
+                    if (Objects.requireNonNull(webView.getUrl()).equals(mainUrl)) {
+                        ImageView imageView = findViewById(R.id.splashImg);
+                        imageView.setVisibility(View.INVISIBLE);
+
+                        ImageView backImg = findViewById(R.id.backImg);
+                        backImg.setVisibility(View.INVISIBLE);
+
+                        webView.setVisibility(View.VISIBLE);
+
+                        pageLoaded = true;
+                        handler.removeCallbacks(slowLoadRunnable);
+                    }
+                }
+            }
+        });
 
         loginClient = new WebViewClient()
         {
             @Override
             public void onPageFinished(WebView view, String url)
             {
-
                 if (url.contains(urlForNewTabClosure))
                 {
                     webView.setVisibility(View.VISIBLE);
@@ -291,6 +311,23 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         };
+
+        loginView.setWebChromeClient(new WebChromeClient(){
+            @Override
+            public void onProgressChanged(WebView view, int newProgress)
+            {
+                if (newProgress < 100)
+                {
+                    progressIndicator.setVisibility(View.VISIBLE);
+                    progressIndicator.setProgress(newProgress);
+                }
+                else
+                {
+                    progressIndicator.setProgress(100);
+                    progressIndicator.setVisibility(View.GONE);
+                }
+            }
+        });
 
         webView.setWebViewClient(webViewClient);
         webView.loadUrl(urlToLoad);
