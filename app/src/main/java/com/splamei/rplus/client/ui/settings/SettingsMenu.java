@@ -46,6 +46,11 @@ public class SettingsMenu {
             prefs.edit().putBoolean(KEY_DEV_MODE, isChecked).apply();
         });
 
+        layout.addView(label);
+        layout.addView(devSwitch);
+
+
+
         // v2 Label
         TextView v2Label = new TextView(activity);
         v2Label.setText("V2 Mode");
@@ -67,11 +72,10 @@ public class SettingsMenu {
             }
         });
 
-        layout.addView(label);
-        layout.addView(devSwitch);
-
         layout.addView(v2Label);
         layout.addView(v2Switch);
+
+
 
         // Show dialog
         new MaterialAlertDialogBuilder(activity)
