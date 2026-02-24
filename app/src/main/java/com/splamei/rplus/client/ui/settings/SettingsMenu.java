@@ -1,15 +1,24 @@
 package com.splamei.rplus.client.ui.settings;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.net.Uri;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.materialswitch.MaterialSwitch;
+import com.google.android.material.button.MaterialButton;
+import com.splamei.rplus.client.MainActivity;
 
 public class SettingsMenu {
 
@@ -77,10 +86,35 @@ public class SettingsMenu {
 
         // Made with love + about
         TextView madeWithLove = new TextView(activity);
-        madeWithLove.setText("Made with <3 by Splamei and contributors\n\n(c) 2024-2026 Splamei + Contributors. MIT Licence");
+        madeWithLove.setText("Made with <3 by Splamei and contributors\n\n(c) 2024-2026 Splamei + Contributors. MIT Licence\n");
         madeWithLove.setTextSize(10f);
 
         layout.addView(madeWithLove);
+
+        // More info button
+        MaterialButton moreInfo = new MaterialButton(activity);
+        moreInfo.setText("More info");
+        moreInfo.setBackgroundColor(Color.DKGRAY);
+        moreInfo.setTextColor(Color.WHITE);
+        moreInfo.setTextSize(12f);
+        moreInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                try
+                {
+                    Intent launchIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.veemo.uk/r-plus-splamei-client/"));
+                    startActivity(activity, launchIntent, null);
+                }
+                catch (ActivityNotFoundException e)
+                {
+                    Toast.makeText(activity, "No app was found to do this. Is a web browser installed?", Toast.LENGTH_LONG).show();
+                    android.util.Log.e("openAboutUrl", "Unable to open about URL! (Not app found) - " + e);
+                }
+            }
+        });
+
+        layout.addView(moreInfo);
 
 
         // Show dialog
