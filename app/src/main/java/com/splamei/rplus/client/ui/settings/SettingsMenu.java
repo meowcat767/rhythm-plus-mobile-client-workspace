@@ -46,11 +46,11 @@ public class SettingsMenu {
         // Switch
         MaterialSwitch devSwitch = new MaterialSwitch(activity);
         devSwitch.setChecked(devModeEnabled);
-        devSwitch.setText(devModeEnabled ? "Enabled" : "Disabled");
+        devSwitch.setText(devModeEnabled ? "Logs will be displayed" : "Logs will be hidden");
 
         // Update text when toggled
         devSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            devSwitch.setText(isChecked ? "Enabled" : "Disabled");
+            devSwitch.setText(isChecked ? "Logs will be displayed" : "Logs will be hidden");
             prefs.edit().putBoolean(KEY_DEV_MODE, isChecked).apply();
         });
 
@@ -78,7 +78,7 @@ public class SettingsMenu {
                 Toast.makeText(activity, "An access code from the Discord is needed to use v2!", Toast.LENGTH_LONG).show();
             }
 
-            Toast.makeText(activity, "A restart is required for this to take affect!", Toast.LENGTH_LONG).show();
+            Toast.makeText(activity, "A restart is required for v2 mode to take affect", Toast.LENGTH_LONG).show();
         });
 
         layout.addView(v2Label);

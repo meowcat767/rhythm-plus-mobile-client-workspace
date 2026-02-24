@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity
 
     // String data
     public static String secondTabNormalCloseMessage = "Welcome to Rhythm Plus";
-    public static String secondTabLoadToastMessage = "Please wait while the sign-in page loads";
+    public static String secondTabLoadToastMessage = "Please wait. The sign in page is loading now";
 
     public boolean lockSso = false;
 
@@ -135,8 +135,8 @@ public class MainActivity extends AppCompatActivity
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        createChannel(this, MISC_CHANNEL_ID, "Misc", "Other notifications used by the client", NotificationManager.IMPORTANCE_DEFAULT);
-        createChannel(this, ERROR_CHANNEL_ID, "Errors", "Notifications sent when errors occur", NotificationManager.IMPORTANCE_HIGH);
+        createChannel(this, MISC_CHANNEL_ID, "Misc", "General notifications sent by the client", NotificationManager.IMPORTANCE_DEFAULT);
+        //createChannel(this, ERROR_CHANNEL_ID, "Errors", "Notifications sent when errors occur", NotificationManager.IMPORTANCE_HIGH);
 
         try {
             Intent aboutIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.veemo.uk/r-plus-splamei-client"));
@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity
         int UI_OPTIONS = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
         getWindow().getDecorView().setSystemUiVisibility(UI_OPTIONS);
 
-        logInfo(this, "onCreate", "Starting WebView....");
+        logInfo(this, "onCreate", "Starting the WebView...");
 
         webView = findViewById(R.id.mainWeb);
         FrameLayout errorLayout = findViewById(R.id.errorLayout);
@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity
         //new SettingsMenu();
         settingsButton.setOnClickListener(v -> SettingsMenu.showMenu(MainActivity.this));
         
-        logInfo(this, "onCreate", "WebView setting created. Now setting up the wait handler");
+        logInfo(this, "onCreate", "WebView setting created! Now setting up the wait handler");
 
         Handler handler = new Handler();
         Runnable slowLoadRunnable = () -> {
@@ -394,7 +394,7 @@ public class MainActivity extends AppCompatActivity
 
         handler.postDelayed(slowLoadRunnable, 8000);
 
-        logInfo(this, "onCreate", "Client Started. Now checking for updates...");
+        logInfo(this, "onCreate", "Client Started. Now checking for updates");
 
         // Again, we don't need to specify a string here
         StringRequest ExampleStringRequest = new StringRequest(Request.Method.GET, updateUrl, response -> {
