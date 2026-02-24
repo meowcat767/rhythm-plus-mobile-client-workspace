@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,6 +75,12 @@ public class SettingsMenu {
         layout.addView(v2Label);
         layout.addView(v2Switch);
 
+        // Made with love + about
+        TextView madeWithLove = new TextView(activity);
+        madeWithLove.setText("Made with <3 by Splamei and contributors\n\n(c) 2025 Splamei + Contributors. MIT Licence");
+        madeWithLove.setTextSize(10f);
+
+        layout.addView(madeWithLove);
 
 
         // Show dialog
