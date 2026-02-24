@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity
         createChannel(this, ERROR_CHANNEL_ID, "Errors", "Notifications sent when errors occur", NotificationManager.IMPORTANCE_HIGH);
 
         try {
-            Intent aboutIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://rhythm-plus.com"));
+            Intent aboutIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.veemo.uk/r-plus-splamei-client"));
             Intent licenceIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/splamei/rhythm-plus-mobile-client/blob/master/LICENSE"));
 
             // Only create shortcut if there's an app to handle it
