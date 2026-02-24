@@ -1,10 +1,13 @@
 package com.splamei.rplus.client;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -295,9 +298,18 @@ public class MainActivity extends AppCompatActivity
                     return true;
                 }
 
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                view.getContext().startActivity(intent);
+                try
+                {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    view.getContext().startActivity(intent);
+                }
+                catch (ActivityNotFoundException e)
+                {
+                    Toast.makeText(MainActivity.this, "No app was found to do this. Is a web browser installed?", Toast.LENGTH_LONG).show();
+                    android.util.Log.e("openAboutUrl", "Unable to open about URL! (Not app found) - " + e);
+                }
+
                 return true;
             }
         };
