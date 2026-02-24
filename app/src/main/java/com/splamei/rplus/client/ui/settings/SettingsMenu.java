@@ -10,7 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.materialswitch.MaterialSwitch;
 
 public class SettingsMenu {
 
@@ -36,7 +36,7 @@ public class SettingsMenu {
         label.setTextSize(18f);
 
         // Switch
-        Switch devSwitch = new Switch(activity);
+        MaterialSwitch devSwitch = new MaterialSwitch(activity);
         devSwitch.setChecked(devModeEnabled);
         devSwitch.setText(devModeEnabled ? "Enabled" : "Disabled");
 
@@ -52,7 +52,7 @@ public class SettingsMenu {
         v2Label.setTextSize(18f);
 
         // v2 Switch
-        Switch v2Switch = new Switch(activity);
+        MaterialSwitch v2Switch = new MaterialSwitch(activity);
         v2Switch.setChecked(v2ModeEnabled);
         v2Switch.setText("Restart required");
 
