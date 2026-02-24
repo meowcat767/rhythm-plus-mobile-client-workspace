@@ -77,7 +77,7 @@ public class SettingsMenu {
 
         // Made with love + about
         TextView madeWithLove = new TextView(activity);
-        madeWithLove.setText("Made with <3 by Splamei and contributors\n\n(c) 2025 Splamei + Contributors. MIT Licence");
+        madeWithLove.setText("Made with <3 by Splamei and contributors\n\n(c) 2024-2026 Splamei + Contributors. MIT Licence");
         madeWithLove.setTextSize(10f);
 
         layout.addView(madeWithLove);
