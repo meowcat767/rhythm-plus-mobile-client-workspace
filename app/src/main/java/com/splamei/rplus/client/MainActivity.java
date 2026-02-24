@@ -126,7 +126,12 @@ public class MainActivity extends AppCompatActivity
             return insets;
         });
 
-        android.util.Log.i("onCreate", "Client starting...");
+        if (SettingsMenu.isDevMode(this))
+        {
+            logInfo(this, "onCreate", "Development mode on. Displaying logs");
+        }
+
+        logInfo(this, "onCreate", "Client starting...");
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -179,7 +184,7 @@ public class MainActivity extends AppCompatActivity
         int UI_OPTIONS = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
         getWindow().getDecorView().setSystemUiVisibility(UI_OPTIONS);
 
-        android.util.Log.i("onCreate", "Starting WebView....");
+        logInfo(this, "onCreate", "Starting WebView....");
 
         webView = findViewById(R.id.mainWeb);
         FrameLayout errorLayout = findViewById(R.id.errorLayout);
@@ -227,7 +232,7 @@ public class MainActivity extends AppCompatActivity
         //new SettingsMenu();
         settingsButton.setOnClickListener(v -> SettingsMenu.showMenu(MainActivity.this));
         
-        android.util.Log.i("onCreate", "WebView setting created. Now setting up the wait handler");
+        logInfo(this, "onCreate", "WebView setting created. Now setting up the wait handler");
 
         Handler handler = new Handler();
         Runnable slowLoadRunnable = () -> {
@@ -238,7 +243,7 @@ public class MainActivity extends AppCompatActivity
             }
         };
 
-        android.util.Log.i("onCreate", "Wait handler made, now making the web view clients");
+        logInfo(this, "onCreate", "Wait handler made, now making the web view clients");
 
         webViewClient = new WebViewClient()
         {
@@ -389,7 +394,7 @@ public class MainActivity extends AppCompatActivity
 
         handler.postDelayed(slowLoadRunnable, 8000);
 
-        android.util.Log.i("onCreate", "Client Started. Now checking for updates...");
+        logInfo(this, "onCreate", "Client Started. Now checking for updates...");
 
         // Again, we don't need to specify a string here
         StringRequest ExampleStringRequest = new StringRequest(Request.Method.GET, updateUrl, response -> {
@@ -407,7 +412,7 @@ public class MainActivity extends AppCompatActivity
                 newUpdate(MainActivity.this, response);
             }
         }, e -> {
-            android.util.Log.i("onCreate", "Failed to check for updates " + e);
+            logInfo(this, "onCreate", "Failed to check for updates " + e);
             Snackbar snackbar = Snackbar.make(coordinatorLayout,
                     "Something went wrong while checking for updates!", Snackbar.LENGTH_LONG);
             snackbar.show();
@@ -417,7 +422,7 @@ public class MainActivity extends AppCompatActivity
 
         ExampleRequestQueue.add(ExampleStringRequest);
 
-        android.util.Log.i("onCreate", "Now checking for notices");
+        logInfo(this, "onCreate", "Now checking for notices");
 
         // We don't need to specify a string here.
         StringRequest NoticesStringRequest = new StringRequest(Request.Method.GET, noticesUrl, response -> {
@@ -434,10 +439,13 @@ public class MainActivity extends AppCompatActivity
                     saveToFile(MainActivity.this, "seenNotices.dat", splitNotices[3]);
                     showNewNotice(MainActivity.this, splitNotices[0], splitNotices[1], splitNotices[2]);
                 }
+                else{
+                    logInfo(this, "onCreate", "No new notices!");
+                }
             }
             catch (Exception e)
             {
-                android.util.Log.i("onCreate", "Failed to decode notices - " + e);
+                logInfo(this, "onCreate", "Failed to decode notices - " + e);
                 Snackbar snackbar = Snackbar.make(coordinatorLayout,
                         "Something went wrong while checking for notices! (Decode error)", Snackbar.LENGTH_LONG);
                 snackbar.show();
@@ -445,7 +453,7 @@ public class MainActivity extends AppCompatActivity
                 triggerVibration(un_happyVibrationEffect);
             }
         }, e -> {
-            android.util.Log.i("onCreate", "Failed to get current notices - " + e);
+            logInfo(this, "onCreate", "Failed to get current notices - " + e);
             Snackbar snackbar = Snackbar.make(coordinatorLayout,
                     "Something went wrong while checking for notices!", Snackbar.LENGTH_LONG);
             snackbar.show();
@@ -512,7 +520,7 @@ public class MainActivity extends AppCompatActivity
 
     public static void sendNotification(Context context, final String ID, String title, String message, int importance, int id)
     {
-        android.util.Log.i("sendNotification", "Sending notification - '" + title + "' - '" + message + "'");
+        logInfo(context, "sendNotification", "Sending notification - '" + title + "' - '" + message + "'");
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, ID)
                 .setContentTitle(title)
@@ -533,7 +541,7 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
-        android.util.Log.i("sendNotificationWithURL", "Sending notification - '" + title + "' - '" + message + "'");
+        logInfo(context, "sendNotificationWithURL", "Sending notification - '" + title + "' - '" + message + "'");
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, ID)
                 .setContentTitle(title)
@@ -619,7 +627,7 @@ public class MainActivity extends AppCompatActivity
     {
         if (!myVerCode.contains(response))
         {
-            android.util.Log.i("newUpdate", "New update to the client! Showing user");
+            logInfo(context, "newUpdate", "New update to the client! Showing user");
 
             showDialogBox(
                     context,
@@ -646,6 +654,10 @@ public class MainActivity extends AppCompatActivity
                     },
                     null
             );
+        }
+        else
+        {
+            logInfo(context, "newUpdate", "No new update!");
         }
     }
 
@@ -697,5 +709,15 @@ public class MainActivity extends AppCompatActivity
         {
             android.util.Log.e("triggerVibration", "Failed to vibrate the device! Now disabling vibrations - " + e);
         }
+    }
+
+    public static void logInfo(Context context, String tag, String info)
+    {
+        if (SettingsMenu.isDevMode(context))
+        {
+            Toast.makeText(context, info, Toast.LENGTH_SHORT).show();
+        }
+
+        android.util.Log.i(tag, info);
     }
 }
