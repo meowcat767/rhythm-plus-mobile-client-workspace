@@ -59,17 +59,18 @@ public class SettingsMenu {
         // v2 Switch
         MaterialSwitch v2Switch = new MaterialSwitch(activity);
         v2Switch.setChecked(v2ModeEnabled);
-        v2Switch.setText("Restart required");
+        v2Switch.setText("A restart will be required");
 
         // v2 Update text when toggled
         v2Switch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            v2Switch.setText("Restart required");
             prefs.edit().putBoolean(KEY_V2_MODE, isChecked).apply();
 
             if (isChecked)
             {
                 Toast.makeText(activity, "An access code from the Discord is needed to use v2!", Toast.LENGTH_LONG).show();
             }
+
+            Toast.makeText(activity, "A restart is required for this to take affect!", Toast.LENGTH_LONG).show();
         });
 
         layout.addView(v2Label);
