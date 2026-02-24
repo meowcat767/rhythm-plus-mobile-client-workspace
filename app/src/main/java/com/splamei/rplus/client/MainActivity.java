@@ -12,6 +12,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.VibrationAttributes;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebChromeClient;
@@ -101,6 +104,12 @@ public class MainActivity extends AppCompatActivity
     public static final String ERROR_CHANNEL_ID = "error_channel";
     public static final String MISC_CHANNEL_ID = "misc_channel";
 
+    // Vibration stuff
+    boolean enableVibrations = true;
+    Vibrator vibrator;
+    VibrationEffect annoyedVibrationEffect;
+    VibrationEffect un_happyVibrationEffect;
+
     RequestQueue ExampleRequestQueue;
 
     @SuppressLint({"SetJavaScriptEnabled", "QueryPermissionsNeeded"})
@@ -155,7 +164,9 @@ public class MainActivity extends AppCompatActivity
             android.util.Log.e("ShortcutError", "Failed to create shortcut: " + e);
         }
 
-
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        annoyedVibrationEffect = VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE);
+        un_happyVibrationEffect = VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE);
 
         ExampleRequestQueue = Volley.newRequestQueue(MainActivity.this);
         coordinatorLayout = findViewById(R.id.main);
@@ -247,6 +258,8 @@ public class MainActivity extends AppCompatActivity
                     {
                         showDialogBox(MainActivity.this, "You can't do that", "Signing in that way is disabled in this release of the client. Please sign in via email instead.\n\nIf you need to sign in this way, please use a release that supports signing in this way or convert your account to use email sign in\n\nFor more information, please email us or join our Discord.", "Ok", "", null, null);
 
+                        triggerVibration(annoyedVibrationEffect);
+
                         return true;
                     }
 
@@ -336,6 +349,8 @@ public class MainActivity extends AppCompatActivity
                             secondTabNormalCloseMessage, Snackbar.LENGTH_LONG);
                     snackbar.show();
 
+                    triggerVibration(un_happyVibrationEffect);
+
                     loginView.loadUrl("about:blank");
 
                     showingAuthPage = false;
@@ -397,6 +412,8 @@ public class MainActivity extends AppCompatActivity
             Snackbar snackbar = Snackbar.make(coordinatorLayout,
                     "Something went wrong while checking for updates!", Snackbar.LENGTH_LONG);
             snackbar.show();
+
+            triggerVibration(un_happyVibrationEffect);
         });
 
         ExampleRequestQueue.add(ExampleStringRequest);
@@ -425,12 +442,16 @@ public class MainActivity extends AppCompatActivity
                 Snackbar snackbar = Snackbar.make(coordinatorLayout,
                         "Something went wrong while checking for notices! (Decode error)", Snackbar.LENGTH_LONG);
                 snackbar.show();
+
+                triggerVibration(un_happyVibrationEffect);
             }
         }, e -> {
             android.util.Log.i("onCreate", "Failed to get current notices - " + e);
             Snackbar snackbar = Snackbar.make(coordinatorLayout,
                     "Something went wrong while checking for notices!", Snackbar.LENGTH_LONG);
             snackbar.show();
+
+            triggerVibration(un_happyVibrationEffect);
         });
 
         ExampleRequestQueue.add(NoticesStringRequest);
@@ -663,5 +684,19 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         // Check battery again when returning to the app
         BatteryWarn.checkBatteryLevel(this);
+    }
+
+    public void triggerVibration(VibrationEffect vibrationEffect)
+    {
+        if (!enableVibrations) { return; }
+
+        try
+        {
+            vibrator.cancel();
+            vibrator.vibrate(vibrationEffect);
+        } catch (Exception e)
+        {
+            android.util.Log.e("triggerVibration", "Failed to vibrate the device! Now disabling vibrations - " + e);
+        }
     }
 }
