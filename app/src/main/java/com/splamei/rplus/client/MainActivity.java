@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity
     WebViewClient webViewClient;
     WebViewClient loginClient;
 
-    CoordinatorLayout coordinatorLayout;
+    static CoordinatorLayout coordinatorLayout;
 
     LinearProgressIndicator progressIndicator;
 
@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity
                 ShortcutManagerCompat.pushDynamicShortcut(this, licenceShortcut);
             }
         } catch(Resources.NotFoundException e) {
-            android.util.Log.e("ShortcutError", "Failed to create shortcut: " + e);
+            logError(this, "ShortcutError", "Failed to create shortcut: " + e);
         }
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -305,7 +305,7 @@ public class MainActivity extends AppCompatActivity
                 catch (ActivityNotFoundException e)
                 {
                     Toast.makeText(MainActivity.this, "No app was found to do this. Is a web browser installed?", Toast.LENGTH_LONG).show();
-                    android.util.Log.e("openAboutUrl", "Unable to open about URL! (Not app found) - " + e);
+                    logError(MainActivity.this, "openAboutUrl", "Unable to open about URL! (Not app found) - " + e);
                 }
 
                 return true;
@@ -615,7 +615,7 @@ public class MainActivity extends AppCompatActivity
         }
         catch (IOException e)
         {
-            android.util.Log.e("readFile", "Failed to read file '" + fileName + "'! - " + e);
+            logError(context, "readFile", "Failed to read file '" + fileName + "'! - " + e);
         }
 
         return text.toString();
@@ -629,7 +629,7 @@ public class MainActivity extends AppCompatActivity
         }
         catch (IOException e)
         {
-            android.util.Log.e("saveToFile", "Failed to save file '" + fileName + "'! - " + e);
+            logError(context, "saveToFile", "Failed to save file '" + fileName + "'! - " + e);
         }
     }
 
@@ -723,7 +723,7 @@ public class MainActivity extends AppCompatActivity
             vibrator.vibrate(vibrationEffect);
         } catch (Exception e)
         {
-            android.util.Log.e("triggerVibration", "Failed to vibrate the device! Now disabling vibrations - " + e);
+            logError(this, "triggerVibration", "Failed to vibrate the device! Now disabling vibrations - " + e);
         }
     }
 
@@ -731,10 +731,28 @@ public class MainActivity extends AppCompatActivity
     {
         if (SettingsMenu.isDevMode(context))
         {
-            Toast.makeText(context, info, Toast.LENGTH_SHORT).show();
+            if (coordinatorLayout == null) { return; }
+
+            Snackbar snackbar = Snackbar.make(coordinatorLayout,
+                    "[INFO] " + tag + " - " + info, Snackbar.LENGTH_LONG);
+            snackbar.show();
         }
 
         android.util.Log.i(tag, info);
+    }
+
+    public static void logError(Context context, String tag, String info)
+    {
+        if (SettingsMenu.isDevMode(context))
+        {
+            if (coordinatorLayout == null) { return; }
+
+            Snackbar snackbar = Snackbar.make(coordinatorLayout,
+                    "[ERROR] " + tag + " - " + info, Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
+
+        android.util.Log.e(tag, info);
     }
 
     @Override
