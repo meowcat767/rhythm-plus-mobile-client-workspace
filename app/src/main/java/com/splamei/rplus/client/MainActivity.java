@@ -293,6 +293,8 @@ public class MainActivity extends AppCompatActivity
 
                     handler.postDelayed(slowLoadRunnable, 8000);
 
+                    logInfo(MainActivity.this, "shouldOverrideUrlLoading (main)", "Now loading SSO login page");
+
                     return true;
                 }
 
@@ -374,6 +376,8 @@ public class MainActivity extends AppCompatActivity
                     loginView.loadUrl("about:blank");
 
                     showingAuthPage = false;
+
+                    logInfo(MainActivity.this, "onPageFinished (login)", "SSO Login finished! Now returning");
                 }
             }
         };
@@ -510,6 +514,8 @@ public class MainActivity extends AppCompatActivity
                         showingAuthPage = false;
 
                         loginView.loadUrl("about:blank");
+
+                        logInfo(this, "onKeyDown", "Back key pressed, returning to R+");
                     }
                     return true;
                 }
@@ -531,6 +537,8 @@ public class MainActivity extends AppCompatActivity
             channel.enableVibration(true);
 
             notificationManager.createNotificationChannel(channel);
+
+            logInfo(context, "createChannel", "Created notification channel " + ID);
         }
     }
 
@@ -549,6 +557,10 @@ public class MainActivity extends AppCompatActivity
         if (notificationManagerCompat.areNotificationsEnabled())
         {
             notificationManagerCompat.notify(id, builder.build());
+        }
+        else
+        {
+            logError(context, "sendNotification", "Unable to send notification since they are disabled!");
         }
     }
 
@@ -575,6 +587,10 @@ public class MainActivity extends AppCompatActivity
             notificationManagerCompat.notify(notificationID, builder.build());
 
             return true;
+        }
+        else
+        {
+            logError(context, "sendNotification", "Unable to send notification since they are disabled!");
         }
 
         return false;
