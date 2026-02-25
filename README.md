@@ -54,7 +54,7 @@ You may want to try the following to fix any issues:
 - Clear the cache and data of the client
 - Re-setup Android
 
-This may not fix the issues, if so, please create a GitHub issue with the detains to help debugging.
+This may not fix the issues, if so, please create a GitHub issue with the details to help debugging.
 ## FAQ
 ### Q) Is the client available on the Play Store?
 Currently, no. I do have plan to have it on the play store but that won't happen for at least a few years to allow to client to be in a usable state.
