@@ -1,7 +1,5 @@
 package com.splamei.rplus.client;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
@@ -746,18 +744,18 @@ public class MainActivity extends AppCompatActivity
 
         if (requestCode == 1008)
         {
+            Snackbar snackbar;
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
             {
-                Snackbar snackbar = Snackbar.make(coordinatorLayout,
+                snackbar = Snackbar.make(coordinatorLayout,
                         "Notifications have been enabled! We'll use them when needed.", Snackbar.LENGTH_LONG);
-                snackbar.show();
             }
             else
             {
-                Snackbar snackbar = Snackbar.make(coordinatorLayout,
+                snackbar = Snackbar.make(coordinatorLayout,
                         "Notifications has been disabled. You'll have to manually enable them later for them to work", Snackbar.LENGTH_LONG);
-                snackbar.show();
             }
+            snackbar.show();
         }
     }
 }
