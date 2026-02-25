@@ -661,7 +661,7 @@ public class MainActivity extends AppCompatActivity
 
                         Intent intent = new Intent(
                                 Intent.ACTION_VIEW,
-                                Uri.parse("https://github.com/splamei/rplus-mobile-client/releases")
+                                Uri.parse("https://github.com/splamei/rhythm-plus-mobile-client/releases")
                         );
 
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
