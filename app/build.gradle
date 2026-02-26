@@ -4,14 +4,14 @@ plugins {
 
 android {
     namespace 'com.splamei.rplus.client'
-    compileSdk 36
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.splamei.rplus.client"
         minSdk 26
-        targetSdk 36
-        versionCode 3
-        versionName "2.1"
+        targetSdk 35
+        versionCode 4
+        versionName "3.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
