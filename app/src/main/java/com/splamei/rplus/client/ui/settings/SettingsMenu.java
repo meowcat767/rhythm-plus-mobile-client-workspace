@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.splamei.rplus.client.utils.WebViewUtils;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.materialswitch.MaterialSwitch;
@@ -83,6 +84,28 @@ public class SettingsMenu {
 
         layout.addView(v2Label);
         layout.addView(v2Switch);
+
+        MaterialButton clearWebView = new MaterialButton(activity);
+        clearWebView.setText("Clear WebView Cache");
+        clearWebView.setBackgroundColor(Color.RED);
+        clearWebView.setTextColor(Color.WHITE);
+        clearWebView.setTextSize(12f);
+
+        clearWebView.setOnClickListener(v -> {
+            new MaterialAlertDialogBuilder(activity)
+                    .setTitle("Clear WebView data>")
+                    .setMessage("This will log you out of Rhythm+!")
+                    .setPositiveButton("Clear", (dialog, which) -> {
+                        WebViewUtils wbv = new WebViewUtils();
+                        wbv.clearWebViewData(activity);
+                        Toast.makeText(activity, "WebView data cleared", Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
+        });
+
+        layout.addView(clearWebView);
+
 
         // Made with love + about
         TextView madeWithLove = new TextView(activity);
