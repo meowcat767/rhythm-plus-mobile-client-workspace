@@ -93,7 +93,7 @@ public class SettingsMenu {
 
         clearWebView.setOnClickListener(v -> {
             new MaterialAlertDialogBuilder(activity)
-                    .setTitle("Clear WebView data>")
+                    .setTitle("Clear WebView data")
                     .setMessage("This will log you out of Rhythm+!")
                     .setPositiveButton("Clear", (dialog, which) -> {
                         WebViewUtils wbv = new WebViewUtils();
