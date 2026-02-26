@@ -23,7 +23,7 @@ import com.splamei.rplus.client.MainActivity;
 public class SettingsMenu {
 
     private static final String PREFS_NAME = "rplus_config";
-    private static final String KEY_DEV_MODE = "development_mode";
+    public static final String KEY_DEV_MODE = "development_mode";
     private static final String KEY_V2_MODE = "version_two_mode";
 
     @SuppressLint("SetTextI18n")
